@@ -28,8 +28,7 @@ jobs:
             laravel: 10
           - php: 8.2
             laravel: 8
-
-
+            
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
