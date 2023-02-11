@@ -1,18 +1,18 @@
-# Ban System for Laravel
+# Banhammer - a ban package for Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mchev/bans-for-laravel.svg?style=flat-square)](https://packagist.org/packages/mchev/bans-for-laravel)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/mchev/bans-for-laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/mchev/bans-for-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/mchev/bans-for-laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/mchev/bans-for-laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/mchev/bans-for-laravel.svg?style=flat-square)](https://packagist.org/packages/mchev/bans-for-laravel)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/mchev/banhammer/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/mchev/banhammer/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/mchev/banhammer/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/mchev/banhammer/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
 
-Bans for Laravel allows you to ban any Model by key and by IP.
+Banhammer allows you to ban any Model by key and by IP.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require mchev/bans-for-laravel
+composer require mchev/banhammer
 ```
 
 Then run the migrations with:
@@ -24,7 +24,7 @@ php artisan migrate
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="bans-for-laravel-config"
+php artisan vendor:publish --tag="banhammer-config"
 ```
 
 ## Usage
