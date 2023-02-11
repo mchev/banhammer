@@ -1,18 +1,20 @@
-name: run-tests
+name: Tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - '*.x'
   pull_request:
-    branches: [main]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest]
         php: [7.4, '8.0', 8.1, 8.2]
         laravel: [8, 9, 10]
         include:
