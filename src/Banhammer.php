@@ -54,5 +54,4 @@ class Banhammer
     {
         Ban::onlyTrashed()->forceDelete();
     }
-
 }

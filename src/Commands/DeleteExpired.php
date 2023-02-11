@@ -5,15 +5,15 @@ namespace Mchev\Banhammer\Commands;
 use Illuminate\Console\Command;
 use Mchev\Banhammer\Banhammer;
 
-class BanhammerCommand extends Command
+class DeleteExpired extends Command
 {
-    public $signature = 'banhammer:clear';
+    public $signature = 'banhammer:unban';
 
-    public $description = 'Permanently delete all the expired bans';
+    public $description = 'Delete all the expired bans';
 
     public function handle(): int
     {
-        Banhammer::clear();
+        Banhammer::unbanExpired();
         $this->info('All expired bans have been deleted.');
 
         return self::SUCCESS;

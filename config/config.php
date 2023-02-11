@@ -18,12 +18,12 @@ return [
     | Where to redirect banned Models
     |--------------------------------------------------------------------------
     |
-    | Url to which the user will be redirected when he/she tries to log in after being banned. You can use a route like route('login').
+    | Url to which the user will be redirected when he/she tries to log in after being banned.
     | If not defined, the banned user will be redirected to the previous page.
     |
     */
 
-    'fallback_url' => null, // null | route('banned') | "/you-are-banned"
+    'fallback_url' => null, // null | "/oops"
 
     /*
     |--------------------------------------------------------------------------

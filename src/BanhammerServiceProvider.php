@@ -2,8 +2,11 @@
 
 namespace Mchev\Banhammer;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Mchev\Banhammer\Commands\ClearBans;
+use Mchev\Banhammer\Commands\DeleteExpired;
 use Mchev\Banhammer\Middleware\AuthBanned;
 use Mchev\Banhammer\Middleware\IPBanned;
 use Mchev\Banhammer\Models\Ban;
@@ -29,11 +32,19 @@ class BanhammerServiceProvider extends ServiceProvider
             // Publishing the config.
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('ban.php'),
-            ], 'config');
+            ], 'banhammer-config');
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                ClearBans::class,
+                DeleteExpired::class,
+            ]);
         }
+
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+            $schedule->command('banhammer:unban')->everyMinute();
+        });
     }
 
     /**
@@ -43,10 +54,5 @@ class BanhammerServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'ban');
-
-        // Register the main class to use with the facade
-        $this->app->bind('bans-for-laravel', function ($app) {
-            return new Banhammer();
-        });
     }
 }

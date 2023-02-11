@@ -43,7 +43,7 @@ trait Bannable
     public function banUntil(string $date): Ban
     {
         return $this->ban([
-            'expired_at' => $date
+            'expired_at' => $date,
         ]);
     }
 
