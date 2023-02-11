@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create(config('ban.table'), function (Blueprint $table) {
             $table->id();
-            $table->morphs('bannable');
+            $table->nullableMorphs('bannable');
             $table->nullableMorphs('created_by');
             $table->text('comment')->nullable();
             $table->string('ip', 45)->nullable();

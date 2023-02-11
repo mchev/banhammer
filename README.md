@@ -31,6 +31,8 @@ You can publish the config file with:
 php artisan vendor:publish --tag="banhammer-config"
 ```
 
+It is possible to define the table name and the fallback_url in the `config/ban.php` file.
+
 ## Usage
 
 To make a model bannable, add the `Mchev\Banhammer\Traits\Bannable` trait to the model:
@@ -75,6 +77,30 @@ $user->banUntil('2 days');
 $user->unban();
 ```
 
+### IP
+
+Manually ban an IP
+```php
+use Mchev\Banhammer\Banhammer;
+
+// You can ban multiple IPs
+$ban = Banhammer::ban(["8.8.8.8"]);
+```
+
+Manually unban IPs
+```php
+use Mchev\Banhammer\Banhammer;
+
+$ban = Banhammer::unban(["8.8.8.8", "4.4.4.4"]);
+```
+
+List all banned IPs
+```php
+use Mchev\Banhammer\Banhammer;
+
+$ips = Banhammer::bannedIps();
+```
+
 ### Middleware
 To prevent banned users from accessing certain parts of your application, simply add the `auth.banned` middleware on the concerned routes.
 ```php
@@ -88,6 +114,7 @@ Route::get('/profile', function () {
 ### Events
 
 If entity is banned Mchev\Banhammer\Events\ModelWasBanned event is fired.
+
 Is entity is unbanned Mchev\Banhammer\Events\ModelWasUnbanned event is fired.
 
 ## Testing

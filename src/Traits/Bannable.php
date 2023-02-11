@@ -5,6 +5,7 @@ namespace Mchev\Banhammer\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Mchev\Banhammer\Models\Ban;
+use Carbon\Carbon;
 
 trait Bannable
 {
