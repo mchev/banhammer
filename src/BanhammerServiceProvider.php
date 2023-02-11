@@ -4,7 +4,8 @@ namespace Mchev\Banhammer;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Mchev\Banhammer\Middleware\AuthenticateBanned;
+use Mchev\Banhammer\Middleware\AuthBanned;
+use Mchev\Banhammer\Middleware\IPBanned;
 use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\Observers\BanObserver;
 
@@ -20,7 +21,8 @@ class BanhammerServiceProvider extends ServiceProvider
         Ban::observe(BanObserver::class);
 
         $router = $this->app->make(Router::class);
-        $router->aliasMiddleware('auth.banned', AuthenticateBanned::class);
+        $router->aliasMiddleware('auth.banned', AuthBanned::class);
+        $router->aliasMiddleware('ip.banned', IPBanned::class);
 
         if ($this->app->runningInConsole()) {
 

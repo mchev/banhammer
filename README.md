@@ -49,6 +49,7 @@ class User extends Authenticatable
     use Bannable;
 }
 ```
+> You can add the Bannable trait on as many models as you want (Team, Group, User, etc.).
 
 ### Ban / Unban
 
@@ -73,25 +74,27 @@ $user->ban([
 // Shorthand
 $user->banUntil('2 days');
 
+// List user bans
+$bans = $user->bans();
+
 // Unban
 $user->unban();
 ```
 
 ### IP
 
-Manually ban an IP
+Manually ban IPs
 ```php
 use Mchev\Banhammer\Banhammer;
 
-// You can ban multiple IPs
-$ban = Banhammer::ban(["8.8.8.8"]);
+Banhammer::ban(["8.8.8.8"]);
 ```
 
 Manually unban IPs
 ```php
 use Mchev\Banhammer\Banhammer;
 
-$ban = Banhammer::unban(["8.8.8.8", "4.4.4.4"]);
+Banhammer::unban(["8.8.8.8", "4.4.4.4"]);
 ```
 
 List all banned IPs
@@ -109,13 +112,49 @@ Route::get('/profile', function () {
 })->middleware('auth.banned');
 ```
 
+To prevent banned ips from accessing certain parts of your application, simply add the `ip.banned` middleware on the concerned routes.
+```php
+Route::get('/home', function () {
+    // ...
+})->middleware('ip.banned');
+```
+
+To block all, simply add the two middlewares:
+```php
+Route::get('/', function () {
+    // ...
+})->middleware(['ip.banned', 'auth.banned']);
+```
+
 ### Scheduler
+
+> ⚠ IMPORTANT
+
+In order to be able to automatically delete expired bans, you must have a cron job set up on your server to run the Laravel Scheduled Jobs
+
+> [Running the scheduler](https://laravel.com/docs/9.x/scheduling#running-the-scheduler)
+
+> [Configure Scheduler on Forge](https://forge.laravel.com/docs/1.0/resources/scheduler.html#laravel-scheduled-jobs)
 
 ### Events
 
 If entity is banned Mchev\Banhammer\Events\ModelWasBanned event is fired.
 
 Is entity is unbanned Mchev\Banhammer\Events\ModelWasUnbanned event is fired.
+
+### MISC
+
+To permanently delete all the expired bans :
+```php
+use Mchev\Banhammer\Banhammer;
+
+$ips = Banhammer::clear();
+```
+
+Or you can use the command:
+```bash
+php artisan banhammer:clear
+```
 
 ## Testing
 

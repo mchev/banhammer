@@ -2,10 +2,10 @@
 
 namespace Mchev\Banhammer\Traits;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Mchev\Banhammer\Models\Ban;
-use Carbon\Carbon;
 
 trait Bannable
 {
@@ -35,9 +35,16 @@ trait Bannable
         return ! $this->isBanned();
     }
 
-    public function ban($attributes = []): Ban
+    public function ban(array $attributes = []): Ban
     {
         return $this->bans()->create($attributes);
+    }
+
+    public function banUntil(string $date): Ban
+    {
+        return $this->ban([
+            'expired_at' => $date
+        ]);
     }
 
     public function unban(): void

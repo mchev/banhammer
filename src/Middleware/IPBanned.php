@@ -6,19 +6,11 @@ use Closure;
 use Mchev\Banhammer\Banhammer;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthenticateBanned
+class IPBanned
 {
     public function handle($request, Closure $next): Response
     {
-        if ($request->user() && $request->user()->isBanned()
-            || $request->ip() && Banhammer::isIpBanned($request->ip())) {
-
-            if($request->user()) {
-                $request->user()->logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-            }
-
+        if ($request->ip() && Banhammer::isIpBanned($request->ip())) {
             return (config('ban.fallback_url'))
                 ? redirect(config('ban.fallback_url'))
                 : abort(403, config('ban.message'));
