@@ -1,0 +1,58 @@
+{
+    "name": "mchev/banhammer",
+    "description": "BanHamer for Laravel allows you to ban any Model by key and by IP.",
+    "keywords": [
+        "mchev",
+        "laravel",
+        "bans-for-laravel",
+        "ban",
+        "bannable",
+        "ip"
+    ],
+    "homepage": "https://github.com/mchev/banhammer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mchev",
+            "email": "martin@pegase.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.0|^8.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mchev\\Banhammer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mchev\\Banhammer\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": false,
+            "phpstan/extension-installer": false
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mchev\\Banhammer\\BanhammerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
