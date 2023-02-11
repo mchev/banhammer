@@ -15,14 +15,14 @@ class IPBannedMiddlewareTest extends TestCase
     {
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
-        Banhammer::ban(['127.0.0.2']);
+        $ip = '127.0.0.1';
 
-        $request = Request::create(config('app.url').'500', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
-        $middleware = new IPBanned();
-        $expectedStatusCode = 403;
+        Banhammer::ban([$ip]);
+
+        $request = Request::create(config('app.url').'500', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
+
         try {
-            $middleware->handle($request, function () {
-            });
+            (new IPBanned())->handle($request, function () {});
         } catch (HttpException $e) {
             $this->assertEquals(403, $e->getStatusCode());
         }
