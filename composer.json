@@ -53,6 +53,6 @@
             ]
         }
     },
-    "minimum-stability": "prefer-stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
