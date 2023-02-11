@@ -1,4 +1,4 @@
-# Banhammer - a ban package for Laravel
+# Banhammer, a ban package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/mchev/banhammer/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/mchev/banhammer/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -48,25 +48,38 @@ class User extends Authenticatable
 }
 ```
 
-```php
-$bansForLaravel = new Mchev\Banhammer();
+### Ban
 
+```php
 // Simple ban
 $user->ban();
 
 // IP Ban
 $user->ban([
-	'comment' => "You've been evil",
-	'ip' => "8.8.8.8",
+	'ip' => $user->ip,
 ]);
 
-// Ban with expiration date
-$team->ban([
-	'expired_at' => Carbon::now()->addDays(7);
-])
+// Full (all attributes are optional)
+$user->ban([
+	'created_by_type' => 'App\Models\User',
+	'created_by_id' => 1,
+	'comment' => "You've been evil",
+	'ip' => "8.8.8.8",
+	'expired_at' => Carbon::now()->addDays(7)
+]);
 
-
+// Shorthand
+$user->banUntil('2 days');
 ```
+
+### Unban
+```php
+$user->unban();
+```
+
+### Middlewares
+
+### Scheduler
 
 ## Testing
 

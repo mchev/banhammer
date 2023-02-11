@@ -2,7 +2,9 @@
 
 namespace Mchev\Banhammer;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Mchev\Banhammer\Middleware\AuthenticateBanned;
 use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\Observers\BanObserver;
 
@@ -16,6 +18,9 @@ class BanhammerServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         Ban::observe(BanObserver::class);
+
+        $router = $this->app->make(Router::class);
+        $router->aliasMiddleware('auth.banned', AuthenticateBanned::class);
 
         if ($this->app->runningInConsole()) {
 

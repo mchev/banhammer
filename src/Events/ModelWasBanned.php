@@ -2,8 +2,8 @@
 
 namespace Mchev\Banhammer\Events;
 
-use Mchev\Banhammer\Models\Ban;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Mchev\Banhammer\Models\Ban;
 
 class ModelWasBanned implements ShouldQueue
 {
