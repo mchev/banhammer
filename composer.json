@@ -22,7 +22,7 @@
         "php": "^8.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0|^8.0",
+        "orchestra/testbench": "^7.0|8.0",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
@@ -53,5 +53,6 @@
             ]
         }
     },
+    "minimum-stability": "prefer-stable",
     "prefer-stable": true
 }
