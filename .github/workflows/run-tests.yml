@@ -17,9 +17,6 @@ jobs:
       matrix:
         php: [7.4, '8.0', 8.1, 8.2]
         laravel: [8, 9, 10]
-        include:
-            - testbench: ^7.0
-            - carbon: ^2.63
         exclude:
           - php: 7.4
             laravel: 9
@@ -50,7 +47,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:^${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --dev --no-update
+          composer require "laravel/framework:^${{ matrix.laravel }}" --dev --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
