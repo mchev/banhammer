@@ -19,10 +19,10 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0"
+        "php": "^8.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0|^7.0|^8.0",
+        "orchestra/testbench": "^7.0|^8.0",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
