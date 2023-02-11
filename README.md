@@ -48,7 +48,7 @@ class User extends Authenticatable
 }
 ```
 
-### Ban
+### Ban / Unban
 
 ```php
 // Simple ban
@@ -70,16 +70,25 @@ $user->ban([
 
 // Shorthand
 $user->banUntil('2 days');
-```
 
-### Unban
-```php
+// Unban
 $user->unban();
 ```
 
-### Middlewares
+### Middleware
+To prevent banned users from accessing certain parts of your application, simply add the `auth.banned` middleware on the concerned routes.
+```php
+Route::get('/profile', function () {
+    // ...
+})->middleware('auth.banned');
+```
 
 ### Scheduler
+
+### Events
+
+If entity is banned Mchev\Banhammer\Events\ModelWasBanned event is fired.
+Is entity is unbanned Mchev\Banhammer\Events\ModelWasUnbanned event is fired.
 
 ## Testing
 
