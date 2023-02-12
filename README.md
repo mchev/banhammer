@@ -105,23 +105,24 @@ $user->unban();
 
 Manually ban IPs
 ```php
-use Mchev\Banhammer\Banhammer;
+use Mchev\Banhammer\IP;
 
-Banhammer::ban(["8.8.8.8"]);
+IP::ban(["8.8.8.8"]);
 ```
 
 Manually unban IPs
 ```php
-use Mchev\Banhammer\Banhammer;
+use Mchev\Banhammer\IP;
 
-Banhammer::unban(["8.8.8.8", "4.4.4.4"]);
+IP::unban(["8.8.8.8", "4.4.4.4"]);
 ```
 
 List all banned IPs
 ```php
-use Mchev\Banhammer\Banhammer;
+use Mchev\Banhammer\IP;
 
-$ips = Banhammer::bannedIps();
+$ips = IP::banned()->get();
+$arrayOfBannedIps = IP::banned()->pluck('ip')->toArray();
 ```
 
 ### Middleware
