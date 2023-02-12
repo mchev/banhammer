@@ -103,7 +103,7 @@ $user->unban();
 
 ### IP
 
-Manually ban IPs
+Ban IPs
 ```php
 use Mchev\Banhammer\IP;
 
@@ -111,7 +111,7 @@ IP::ban("8.8.8.8");
 IP::ban(["8.8.8.8", "4.4.4.4"]);
 ```
 
-Manually unban IPs
+Unban IPs
 ```php
 use Mchev\Banhammer\IP;
 
@@ -123,8 +123,8 @@ List all banned IPs
 ```php
 use Mchev\Banhammer\IP;
 
-$ips = IP::banned()->get();
-$arrayOfBannedIps = IP::banned()->pluck('ip')->toArray();
+$ips = IP::banned()->get(); // Collection
+$ips = IP::banned()->pluck('ip')->toArray(); // Array
 ```
 
 ### Middleware
@@ -167,11 +167,23 @@ Is entity is unbanned `Mchev\Banhammer\Events\ModelWasUnbanned` event is fired.
 
 ### MISC
 
+To manually unban expired bans :
+```php
+use Mchev\Banhammer\Banhammer;
+
+Banhammer::unbanExpired();
+```
+
+Or you can use the command:
+```bash
+php artisan banhammer:unban
+```
+
 To permanently delete all the expired bans :
 ```php
 use Mchev\Banhammer\Banhammer;
 
-$ips = Banhammer::clear();
+Banhammer::clear();
 ```
 
 Or you can use the command:
