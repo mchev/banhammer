@@ -49,31 +49,55 @@ class User extends Authenticatable
 
 ### Ban / Unban
 
+Simple ban
 ```php
-// Simple ban
 $user->ban();
+```
 
-// IP Ban
+IP Ban
+```php
 $user->ban([
 	'ip' => $user->ip,
 ]);
+```
 
-// Full (all attributes are optional)
-$user->ban([
+Full 
+> All attributes are optional
+```php
+$model->ban([
 	'created_by_type' => 'App\Models\User',
 	'created_by_id' => 1,
 	'comment' => "You've been evil",
 	'ip' => "8.8.8.8",
 	'expired_at' => Carbon::now()->addDays(7)
 ]);
+```
 
-// Shorthand
+Shorthand
+```php
 $user->banUntil('2 days');
+```
 
-// List user bans
-$bans = $user->bans();
+List model bans
+```php
+$bans = $model->bans();
+```
 
-// Unban
+Check if model is banned. 
+> You can create custom middlewares using these methods.
+```php
+$model->isBanned();
+$model->isNotBanned();
+```
+
+Filters
+```php
+$bannedTeams = Team::banned()->get(); 
+$notBannedTeams = Team::notBanned()->get();
+```
+
+Unban
+```php
 $user->unban();
 ```
 
