@@ -10,7 +10,7 @@ class AuthBanned
     public function handle($request, Closure $next): Response
     {
         if ($request->user() && $request->user()->isBanned()) {
-            $request->user()->logout();
+            auth()->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 

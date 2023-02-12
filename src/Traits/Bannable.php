@@ -2,7 +2,6 @@
 
 namespace Mchev\Banhammer\Traits;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Mchev\Banhammer\Models\Ban;
@@ -23,7 +22,7 @@ trait Bannable
     public function isBanned(): bool
     {
         return $this->bans()
-            ->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
+            ->notExpired()
             ->exists();
     }
 
@@ -55,7 +54,7 @@ trait Bannable
     public function scopeBanned(Builder $query): void
     {
         $query->whereHas('bans', function ($query) {
-            $query->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'));
+            $query->notExpired();
         });
     }
 

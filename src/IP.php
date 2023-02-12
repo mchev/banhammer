@@ -2,9 +2,8 @@
 
 namespace Mchev\Banhammer;
 
-use Carbon\Carbon;
-use Mchev\Banhammer\Models\Ban;
 use Illuminate\Database\Eloquent\Builder;
+use Mchev\Banhammer\Models\Ban;
 
 class IP
 {
@@ -30,8 +29,7 @@ class IP
     public static function isBanned(string $ip): bool
     {
         return Ban::where('ip', $ip)
-            ->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
-            ->orWhereNull('expired_at')
+            ->notExpired()
             ->exists();
     }
 
@@ -39,8 +37,6 @@ class IP
     {
         return Ban::whereNotNull('ip')
             ->select('id', 'ip', 'updated_at as banned_at')
-            ->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
-            ->orWhereNull('expired_at');
+            ->notExpired();
     }
-
 }

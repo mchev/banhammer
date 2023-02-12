@@ -123,8 +123,8 @@ List all banned IPs
 ```php
 use Mchev\Banhammer\IP;
 
-$ips = IP::banned()->get();
-$arrayOfBannedIps = IP::banned()->pluck('ip')->toArray();
+$ips = IP::bans()->get();
+$arrayOfBannedIps = IP::bans()->pluck('ip')->toArray();
 ```
 
 ### Middleware

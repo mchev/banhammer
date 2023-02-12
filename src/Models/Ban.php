@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class Ban extends Model
 {
@@ -46,4 +47,26 @@ class Ban extends Model
     {
         return $this->morphTo('created_by');
     }
+
+    public function scopePermanent(Builder $query): void
+    {
+        $query->whereNull('expired_at');
+    }
+
+    public function scopeNotPermanent(Builder $query): void
+    {
+        $query->whereNotNull('expired_at');
+    }
+
+    public function scopeExpired(Builder $query): void
+    {
+        $query->notPermanent()->where('expired_at', '<=', Carbon::now()->format('Y-m-d H:i:s'));
+    }
+
+    public function scopeNotExpired(Builder $query): void
+    {
+        $query->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
+            ->orWhereNull('expired_at');
+    }
+
 }

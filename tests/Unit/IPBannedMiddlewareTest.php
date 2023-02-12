@@ -22,7 +22,8 @@ class IPBannedMiddlewareTest extends TestCase
         $request = Request::create(config('app.url').'500', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
 
         try {
-            (new IPBanned())->handle($request, function () {});
+            (new IPBanned())->handle($request, function () {
+            });
         } catch (HttpException $e) {
             $this->assertEquals(403, $e->getStatusCode());
         }
