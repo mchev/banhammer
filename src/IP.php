@@ -4,12 +4,13 @@ namespace Mchev\Banhammer;
 
 use Carbon\Carbon;
 use Mchev\Banhammer\Models\Ban;
+use Illuminate\Database\Eloquent\Builder;
 
 class IP
 {
     public static function ban(string|array $ips): void
     {
-        $bannedIps = self::banned();
+        $bannedIps = self::banned()->pluck('ip')->toArray();
 
         foreach ((array) $ips as $ip) {
             if (! in_array($ip, $bannedIps)) {
@@ -34,13 +35,12 @@ class IP
             ->exists();
     }
 
-    public static function banned(): array
+    public static function banned(): Builder
     {
         return Ban::whereNotNull('ip')
             ->select('id', 'ip', 'updated_at as banned_at')
             ->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
-            ->orWhereNull('expired_at')
-            ->groupBy('ip');
+            ->orWhereNull('expired_at');
     }
 
 }

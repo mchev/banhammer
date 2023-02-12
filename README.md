@@ -107,13 +107,15 @@ Manually ban IPs
 ```php
 use Mchev\Banhammer\IP;
 
-IP::ban(["8.8.8.8"]);
+IP::ban("8.8.8.8");
+IP::ban(["8.8.8.8", "4.4.4.4"]);
 ```
 
 Manually unban IPs
 ```php
 use Mchev\Banhammer\IP;
 
+IP::unban("8.8.8.8");
 IP::unban(["8.8.8.8", "4.4.4.4"]);
 ```
 
