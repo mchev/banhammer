@@ -7,6 +7,13 @@
 
 Banhammer allows you to ban any Model by key and by IP. You also can just ban/unban IPs.
 
+## Version Compatibility
+
+ Laravel        | banhammer
+:---------------------|:----------
+ ^9.0                 | 1.x.x
+ ^10.0                | 1.x.x
+
 ## Installation
 
 You can install the package via composer:
@@ -130,24 +137,26 @@ $ips = IP::banned()->pluck('ip')->toArray(); // Array
 ### Middleware
 To prevent banned users from accessing certain parts of your application, simply add the `auth.banned` middleware on the concerned routes.
 ```php
-Route::get('/profile', function () {
+Route::middleware(['auth.banned'])->group(function () {
     // ...
-})->middleware('auth.banned');
+});
 ```
 
 To prevent banned ips from accessing certain parts of your application, simply add the `ip.banned` middleware on the concerned routes.
 ```php
-Route::get('/home', function () {
+Route::middleware(['ip.banned'])->group(function () {
     // ...
-})->middleware('ip.banned');
+});
 ```
 
 To block all, simply add the two middlewares:
 ```php
-Route::get('/', function () {
+Route::middleware(['ip.banned', 'auth.banned'])->group(function () {
     // ...
-})->middleware(['ip.banned', 'auth.banned']);
+});
 ```
+
+> If you want to block IPs on every HTTP request of your application, list `Mchev\Banhammer\Middleware\IPBanned` in the $middleware property of your app/Http/Kernel.php class.
 
 ### Scheduler
 
