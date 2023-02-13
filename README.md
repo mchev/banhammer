@@ -5,7 +5,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
 [![Package for laravel](https://img.shields.io/badge/Package%20for%20Laravel-grey.svg?style=flat-square&logo=laravel&logoColor=white)](https://packagist.org/packages/mchev/banhammer)
 
-Banhammer allows you to ban any Model by key and by IP. You also can just ban/unban IPs.
+Banhammer for Laravel offers a very simple way to ban any Model by ID or by IP. It also allows to block requests by IP addresses.
+
+Banned models can have an expiration date and will be automatically unbanned using the Scheduler.
 
 ## Version Compatibility
 
@@ -209,6 +211,13 @@ composer test
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Roadmap
+
+- Block IP range
+- Auto block IP (Rate Limiting)
+- Cache
+- Ban history() or archive() method
 
 ## Contributing
 
