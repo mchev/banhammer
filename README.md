@@ -9,7 +9,7 @@ Banhammer allows you to ban any Model by key and by IP. You also can just ban/un
 
 ## Version Compatibility
 
- Laravel        | banhammer
+ Laravel        | Banhammer
 :---------------------|:----------
  ^9.0                 | 1.x.x
  ^10.0                | 1.x.x
@@ -156,7 +156,7 @@ Route::middleware(['ip.banned', 'auth.banned'])->group(function () {
 });
 ```
 
-> If you want to block IPs on every HTTP request of your application, list `Mchev\Banhammer\Middleware\IPBanned` in the $middleware property of your app/Http/Kernel.php class.
+> If you want to block IPs on every HTTP request of your application, list `Mchev\Banhammer\Middleware\IPBanned` in the `$middleware` property of your `app/Http/Kernel.php` class.
 
 ### Scheduler
 
