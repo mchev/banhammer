@@ -9,6 +9,7 @@ use Mchev\Banhammer\Commands\ClearBans;
 use Mchev\Banhammer\Commands\DeleteExpired;
 use Mchev\Banhammer\Middleware\AuthBanned;
 use Mchev\Banhammer\Middleware\IPBanned;
+use Mchev\Banhammer\Middleware\LogoutBanned;
 use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\Observers\BanObserver;
 
@@ -26,6 +27,7 @@ class BanhammerServiceProvider extends ServiceProvider
         $router = $this->app->make(Router::class);
         $router->aliasMiddleware('auth.banned', AuthBanned::class);
         $router->aliasMiddleware('ip.banned', IPBanned::class);
+        $router->aliasMiddleware('logout.banned', LogoutBanned::class);
 
         if ($this->app->runningInConsole()) {
 
