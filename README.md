@@ -151,12 +151,14 @@ Route::middleware(['ip.banned'])->group(function () {
 });
 ```
 
-To block all, simply add the two middlewares:
+To block and logout banned Users or IP, add the `logout.banned` middleware:
 ```php
-Route::middleware(['ip.banned', 'auth.banned'])->group(function () {
+Route::middleware(['logout.banned'])->group(function () {
     // ...
 });
 ```
+
+> If you use the `logout.banned` middleware, it is not necessary to cumulate the other middlewares.
 
 > If you want to block IPs on every HTTP request of your application, list `Mchev\Banhammer\Middleware\IPBanned` in the `$middleware` property of your `app/Http/Kernel.php` class.
 
@@ -214,10 +216,11 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Roadmap
 
-- Block IP range
-- Auto block IP (Rate Limiting)
-- Cache
-- Ban history() or archive() method
+- [ ] More tests
+- [ ] Block IP range
+- [ ] Auto block IP (Rate Limiting)
+- [ ] Cache
+- [ ] Ban history() or archive() method
 
 ## Contributing
 
