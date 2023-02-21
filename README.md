@@ -219,7 +219,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 - [ ] More tests
 - [ ] Block IP range
 - [ ] Auto block IP (Rate Limiting)
-- [ ] Cache
+- [x] Cache
 - [ ] Ban history() or archive() method
 
 ## Contributing

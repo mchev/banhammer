@@ -3,11 +3,11 @@
 namespace Mchev\Banhammer\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 
 class Ban extends Model
 {
@@ -68,5 +68,4 @@ class Ban extends Model
         $query->where('expired_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
             ->orWhereNull('expired_at');
     }
-
 }

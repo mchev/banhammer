@@ -2,8 +2,10 @@
 
 namespace Mchev\Banhammer\Observers;
 
+use Illuminate\Support\Facades\Cache;
 use Mchev\Banhammer\Events\ModelWasBanned;
 use Mchev\Banhammer\Events\ModelWasUnbanned;
+use Mchev\Banhammer\IP;
 use Mchev\Banhammer\Models\Ban;
 
 class BanObserver
@@ -22,10 +24,19 @@ class BanObserver
     public function created(Ban $ban): void
     {
         event(new ModelWasBanned($ban->bannable(), $ban));
+        $this->updateCachedIps($ban);
     }
 
     public function deleted(Ban $ban): void
     {
         event(new ModelWasUnbanned($ban->bannable()));
+        $this->updateCachedIps($ban);
+    }
+
+    public function updateCachedIps(Ban $ban): void
+    {
+        if ($ban->ip) {
+            Cache::put('banned-ips', IP::banned()->pluck('ip')->toArray());
+        }
     }
 }
