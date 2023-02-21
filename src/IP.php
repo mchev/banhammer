@@ -48,6 +48,6 @@ class IP
     {
         return Cache::has('banned-ips')
             ? Cache::get('banned-ips')
-            : self::self::banned()->pluck('ip')->toArray();
+            : self::banned()->pluck('ip')->toArray();
     }
 }
