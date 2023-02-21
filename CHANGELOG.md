@@ -2,6 +2,13 @@
 
 All notable changes to `bans-for-laravel` will be documented in this file.
 
+## v1.1.4 - 2023-02-21
+
+- Adding created by relation in IPs collection.
+- Removing ID in IPs collection.
+- Grouping by IPs to prevent duplicate IPs with the banned() method on IP.
+- Caching IP list for better performances
+
 ## v1.1.3 - 2023-02-13
 
 - Fix nullable attribute expired_at
