@@ -44,7 +44,7 @@ class IP
             ->groupBy('ip');
     }
 
-    public function getBannedIPsFromCache(): Array
+    public static function getBannedIPsFromCache(): Array
     {
         return Cache::has('banned-ips')
             ? Cache::get('banned-ips')
