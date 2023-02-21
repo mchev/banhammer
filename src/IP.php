@@ -2,8 +2,8 @@
 
 namespace Mchev\Banhammer;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 use Mchev\Banhammer\Models\Ban;
 
 class IP
@@ -44,7 +44,7 @@ class IP
             ->groupBy('ip');
     }
 
-    public static function getBannedIPsFromCache(): Array
+    public static function getBannedIPsFromCache(): array
     {
         return Cache::has('banned-ips')
             ? Cache::get('banned-ips')

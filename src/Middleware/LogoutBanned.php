@@ -3,7 +3,7 @@
 namespace Mchev\Banhammer\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Cache;
+use Mchev\Banhammer\IP;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogoutBanned
