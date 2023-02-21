@@ -10,7 +10,7 @@ class IP
 {
     public static function ban(string|array $ips): void
     {
-        $bannedIps = Cache::get('banned-ips');
+        $bannedIps = self::getBannedIPsFromCache();
 
         foreach ((array) $ips as $ip) {
             if (! in_array($ip, $bannedIps)) {
@@ -42,5 +42,12 @@ class IP
             ->with('createdBy')
             ->notExpired()
             ->groupBy('ip');
+    }
+
+    public function getBannedIPsFromCache(): Array
+    {
+        return Cache::has('banned-ips')
+            ? Cache::get('banned-ips')
+            : self::self::banned()->pluck('ip')->toArray();
     }
 }
