@@ -2,6 +2,10 @@
 
 All notable changes to `bans-for-laravel` will be documented in this file.
 
+## v1.1.5 - 2023-02-21
+
+- Fix : Update cache on unban expired command
+
 ## v1.1.4 - 2023-02-21
 
 - Adding created by relation in IPs collection.
