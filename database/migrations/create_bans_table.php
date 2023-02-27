@@ -17,6 +17,7 @@ return new class extends Migration
             $table->nullableMorphs('created_by');
             $table->text('comment')->nullable();
             $table->string('ip', 45)->nullable();
+            $table->json('metas')->nullable();
             $table->timestamp('expired_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
