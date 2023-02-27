@@ -63,6 +63,8 @@ Simple ban
 $user->ban();
 ```
 
+> Without the expired_at attribute specified, the user will be banned forever.
+
 IP Ban
 ```php
 $user->ban([
