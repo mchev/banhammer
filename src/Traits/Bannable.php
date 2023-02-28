@@ -63,7 +63,7 @@ trait Bannable
         $query->whereDoesntHave('bans');
     }
 
-    public function scopeMeta(Builder $query, string $key, $value): void
+    public function scopeWhereBansMeta(Builder $query, string $key, $value): void
     {
         $query->whereHas('bans', function ($query) use ($key, $value) {
             $query->where('metas->' . $key, $value)->notExpired();
