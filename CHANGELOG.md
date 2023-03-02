@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `bans-for-laravel` will be documented in this file.
+All notable changes to `banhammer` will be documented in this file.
 
 ## v1.1.5 - 2023-02-21
 

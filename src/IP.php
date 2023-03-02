@@ -39,16 +39,14 @@ class IP
     public static function banned(): Builder
     {
         return Ban::whereNotNull('ip')
-            ->selectRaw('ip, MIN(updated_at) as banned_at')
             ->with('createdBy')
-            ->notExpired()
-            ->groupBy('ip');
+            ->notExpired();
     }
 
     public static function getBannedIPsFromCache(): array
     {
         return Cache::has('banned-ips')
             ? Cache::get('banned-ips')
-            : self::banned()->pluck('ip')->toArray();
+            : self::banned()->pluck('ip')->unique()->toArray();
     }
 }

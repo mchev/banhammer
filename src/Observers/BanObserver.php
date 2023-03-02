@@ -36,7 +36,7 @@ class BanObserver
     public function updateCachedIps(Ban $ban): void
     {
         if ($ban->ip) {
-            Cache::put('banned-ips', IP::banned()->pluck('ip')->toArray());
+            Cache::put('banned-ips', IP::banned()->pluck('ip')->unique()->toArray());
         }
     }
 }

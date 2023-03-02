@@ -154,24 +154,12 @@ IP::ban("8.8.8.8", [
 ]);
 ```
 
-Set Meta
+Metas usage
 ```php
-$ban->setMeta('username', 'Jane')
-```
-
-Get Meta
-```php
-$ban->getMeta('username') // Jane
-```
-
-Has Meta
-```php
-$ban->hasMeta('username') // boolean
-```
-
-Forget Meta
-```php
-$ban->forgetMeta('username')
+$ban->setMeta('username', 'Jane');
+$ban->getMeta('username'); // Jane
+$ban->hasMeta('username'); // boolean
+$ban->forgetMeta('username');
 ```
 
 Filtering by Meta
