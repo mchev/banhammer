@@ -30,7 +30,6 @@ class BanhammerServiceProvider extends ServiceProvider
         $router->aliasMiddleware('logout.banned', LogoutBanned::class);
 
         if ($this->app->runningInConsole()) {
-
             // Publishing the config.
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('ban.php'),

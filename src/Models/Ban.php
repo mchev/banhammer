@@ -20,18 +20,18 @@ class Ban extends Model
         'comment',
         'ip',
         'expired_at',
-        'metas'
+        'metas',
     ];
 
     protected $casts = [
         'expired_at' => 'datetime',
-        'metas' => 'array'
+        'metas' => 'array',
     ];
 
     protected function expiredAt(): Attribute
     {
         return Attribute::make(
-            set: fn (null|string|Carbon $value) => (!is_null($value) && !$value instanceof Carbon) ? Carbon::parse($value) : $value,
+            set: fn (null|string|Carbon $value) => (! is_null($value) && ! $value instanceof Carbon) ? Carbon::parse($value) : $value,
         );
     }
 
@@ -74,7 +74,7 @@ class Ban extends Model
 
     public function scopeWhereMeta(Builder $query, string $name, $value): void
     {
-        $query->whereJsonContains('metas->' . $name, $value);
+        $query->whereJsonContains('metas->'.$name, $value);
     }
 
     public function hasMeta(string $propertyName): bool
@@ -85,10 +85,7 @@ class Ban extends Model
     /**
      * Get the value of meta with the given name.
      *
-     * @param string $propertyName
-     * @param mixed $default
-     *
-     * @return mixed
+     * @param  mixed  $default
      */
     public function getMeta(string $propertyName, $default = null): mixed
     {
@@ -97,8 +94,8 @@ class Ban extends Model
 
     /**
      * Set the value of meta with the given name.
-     * @param mixed $value
      *
+     * @param  mixed  $value
      * @return $this
      */
     public function setMeta(string $name, $value): self
@@ -112,8 +109,8 @@ class Ban extends Model
 
     /**
      * Forget the value of meta with the given name.
-     * @param mixed $value
      *
+     * @param  mixed  $value
      * @return $this
      */
     public function forgetMeta(string $name): self

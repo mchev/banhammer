@@ -3,11 +3,9 @@
 namespace Mchev\Banhammer\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
-use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\IP;
+use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\Tests\TestCase;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class IPBanTest extends TestCase
 {
@@ -31,7 +29,7 @@ class IPBanTest extends TestCase
     public function test_ip_ban_with_metas(): void
     {
         IP::ban($this->ip, [
-            'user_agent' => request()->header('user-agent')
+            'user_agent' => request()->header('user-agent'),
         ]);
         $ban = Ban::where('ip', $this->ip)->first();
         $this->assertTrue($ban->hasMeta('user_agent'));
@@ -50,5 +48,4 @@ class IPBanTest extends TestCase
         IP::ban([$this->ip, '8.8.8.8', '4.4.4.4']);
         $this->assertDatabaseCount(config('ban.table'), 3);
     }
-
 }

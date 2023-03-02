@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn(config('ban.table'), 'metas')) {
+        if (! Schema::hasColumn(config('ban.table'), 'metas')) {
             Schema::table(config('ban.table'), function (Blueprint $table) {
                 $table->json('metas')->nullable();
             });
