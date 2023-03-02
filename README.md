@@ -80,7 +80,11 @@ $model->ban([
 	'created_by_id' => 1,
 	'comment' => "You've been evil",
 	'ip' => "8.8.8.8",
-	'expired_at' => Carbon::now()->addDays(7)
+	'expired_at' => Carbon::now()->addDays(7),
+	'metas' => [
+		'route' => request()->route()->getName(),
+		'user_agent' => request()->header('user-agent')
+	]
 ]);
 ```
 
@@ -136,6 +140,47 @@ use Mchev\Banhammer\IP;
 
 $ips = IP::banned()->get(); // Collection
 $ips = IP::banned()->pluck('ip')->toArray(); // Array
+```
+
+### Metas
+
+Ban IP with metas
+```php
+use Mchev\Banhammer\IP;
+
+IP::ban("8.8.8.8", [
+	'route' => request()->route()->getName(),
+	'user_agent' => request()->header('user-agent')
+]);
+```
+
+Set Meta
+```php
+$ban->setMeta('username', 'Jane')
+```
+
+Get Meta
+```php
+$ban->getMeta('username') // Jane
+```
+
+Has Meta
+```php
+$ban->hasMeta('username') // boolean
+```
+
+Forget Meta
+```php
+$ban->forgetMeta('username')
+```
+
+Filtering by Meta
+```php
+IP::banned()->whereMeta('username', 'Jane')->get();
+// OR
+$users->bans()->whereMeta('username', 'Jane')->get();
+// OR
+$users->whereBansMeta('username', 'Jane')->get();
 ```
 
 ### Middleware

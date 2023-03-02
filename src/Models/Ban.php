@@ -72,7 +72,7 @@ class Ban extends Model
             ->orWhereNull('expired_at');
     }
 
-    public function scopeMeta(Builder $query, string $name, $value): void
+    public function scopeWhereMeta(Builder $query, string $name, $value): void
     {
         $query->whereJsonContains('metas->' . $name, $value);
     }

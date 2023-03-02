@@ -2,6 +2,7 @@
 
 namespace Mchev\Banhammer\Tests\Unit;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Mchev\Banhammer\IP;
 use Mchev\Banhammer\Middleware\IPBanned;
@@ -10,10 +11,12 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class IPBannedMiddlewareTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_blocks_the_banned_ip()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        // $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         $ip = '127.0.0.1';
 
@@ -23,6 +26,7 @@ class IPBannedMiddlewareTest extends TestCase
 
         try {
             (new IPBanned())->handle($request, function () {
+                //
             });
         } catch (HttpException $e) {
             $this->assertEquals(403, $e->getStatusCode());
