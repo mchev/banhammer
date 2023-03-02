@@ -13,10 +13,10 @@ class IP
         $bannedIps = self::getBannedIPsFromCache();
 
         foreach ((array) $ips as $ip) {
-            if (!in_array($ip, $bannedIps)) {
+            if (! in_array($ip, $bannedIps)) {
                 Ban::create([
                     'ip' => $ip,
-                    'metas' => count($metas) ? $metas : null
+                    'metas' => count($metas) ? $metas : null,
                 ]);
             }
         }
