@@ -31,7 +31,7 @@ trait Bannable
      */
     public function isNotBanned(): bool
     {
-        return ! $this->isBanned();
+        return !$this->isBanned();
     }
 
     public function ban(array $attributes = []): Ban
@@ -61,5 +61,12 @@ trait Bannable
     public function scopeNotBanned(Builder $query): void
     {
         $query->whereDoesntHave('bans');
+    }
+
+    public function scopeWhereBansMeta(Builder $query, string $key, $value): void
+    {
+        $query->whereHas('bans', function ($query) use ($key, $value) {
+            $query->where('metas->' . $key, $value)->notExpired();
+        });
     }
 }
