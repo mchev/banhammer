@@ -267,7 +267,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- Inspired by [laravel-ban](https://github.com/cybercog/laravel-ban) by [cybercog](https://github.com/cybercog)
+- Inspired by [laravel-ban](https://github.com/cybercog/laravel-ban) from [cybercog](https://github.com/cybercog)
 
 ## License
 
