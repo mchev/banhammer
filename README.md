@@ -93,16 +93,23 @@ Shorthand
 $user->banUntil('2 days');
 ```
 
-List model bans
-```php
-$bans = $model->bans();
-```
-
 Check if model is banned. 
 > You can create custom middlewares using these methods.
 ```php
 $model->isBanned();
 $model->isNotBanned();
+```
+
+List model bans
+```php
+// All model bans
+$bans = $model->bans()->get();
+
+// Expired bans
+$expired = $model->bans()->expired()->get();
+
+// Not expired and permanent bans
+$notExpired = $model->bans()->notExpired()->get();
 ```
 
 Filters
@@ -251,11 +258,12 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Roadmap
 
+- [ ] Handle UUIDs and ULIDs
 - [ ] More tests
 - [ ] Block IP range
 - [ ] Auto block IP (Rate Limiting)
 - [x] Cache
-- [ ] Ban history() or archive() method
+- [x] Ban history (expired, not expired)
 
 ## Contributing
 
