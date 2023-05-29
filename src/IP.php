@@ -8,7 +8,7 @@ use Mchev\Banhammer\Models\Ban;
 
 class IP
 {
-    public static function ban(string|array $ips, array $metas = []): void
+    public static function ban(string|array $ips, string|null $reason = null, array $metas = []): void
     {
         $bannedIps = self::getBannedIPsFromCache();
 
@@ -16,6 +16,7 @@ class IP
             if (! in_array($ip, $bannedIps)) {
                 Ban::create([
                     'ip' => $ip,
+                    'comment' => $reason,
                     'metas' => count($metas) ? $metas : null,
                 ]);
             }
