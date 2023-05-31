@@ -69,4 +69,18 @@ trait Bannable
             $query->where('metas->'.$key, $value)->notExpired();
         });
     }
+
+    /**
+     *
+     * @param  Builder $query
+     * @param  string  $className
+     * @return void
+     */
+    public function scopeBannedByType(Builder $query, string $className) : void
+    {
+        $query->whereHas('bans', function ($query) use ($className) {
+            $query->where('created_by_type', $className)->notExpired();
+        });
+    }
+
 }
