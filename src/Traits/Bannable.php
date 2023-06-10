@@ -21,9 +21,9 @@ trait Bannable
      */
     public function isBanned(): bool
     {
-        return $this->bans()
-            ->notExpired()
-            ->exists();
+        return $this->bans->filter(function ($ban) {
+            return $ban->notExpired();
+        })->isNotEmpty();
     }
 
     /**
