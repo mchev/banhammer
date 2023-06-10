@@ -2,6 +2,11 @@
 
 All notable changes to `banhammer` will be documented in this file.
 
+## v1.2.1 - 2023-06-10
+
+- Add scopeBannedByType in Bannable.php. Thanks to @YazeedAlsaif
+- Fix N+1 Issue (#8)
+
 ## v1.2.0 - 2023-03-02
 
 - Adding Metas (cutom properties) to bans.
