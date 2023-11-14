@@ -1,13 +1,14 @@
 {
     "name": "mchev/banhammer",
-    "description": "BanHamer for Laravel allows you to ban any Model by key and by IP.",
+    "description": "Banhammer for Laravel allows you to ban any Model by key and by IP.",
     "keywords": [
         "mchev",
         "laravel",
         "bans-for-laravel",
         "ban",
         "bannable",
-        "ip"
+        "ip",
+        "country"
     ],
     "homepage": "https://github.com/mchev/banhammer",
     "license": "MIT",

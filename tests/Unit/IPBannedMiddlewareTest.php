@@ -4,10 +4,10 @@ namespace Mchev\Banhammer\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Mchev\Banhammer\Exceptions\BanhammerException;
 use Mchev\Banhammer\IP;
 use Mchev\Banhammer\Middleware\IPBanned;
 use Mchev\Banhammer\Tests\TestCase;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class IPBannedMiddlewareTest extends TestCase
 {
@@ -28,7 +28,7 @@ class IPBannedMiddlewareTest extends TestCase
             (new IPBanned())->handle($request, function () {
                 //
             });
-        } catch (HttpException $e) {
+        } catch (BanhammerException $e) {
             $this->assertEquals(403, $e->getStatusCode());
         }
     }

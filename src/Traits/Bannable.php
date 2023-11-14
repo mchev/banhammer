@@ -17,28 +17,34 @@ trait Bannable
     }
 
     /**
-     * If model is not banned.
+     * Check if the model is banned.
      */
     public function isBanned(): bool
     {
-        return $this->bans->filter(function ($ban) {
-            return $ban->notExpired();
-        })->isNotEmpty();
+        return $this->bans->first(function ($ban) {
+            return $ban->expired_at === null || $ban->expired_at->isFuture();
+        }) !== null;
     }
 
     /**
-     * If model is not banned.
+     * Check if the model is not banned.
      */
     public function isNotBanned(): bool
     {
         return ! $this->isBanned();
     }
 
+    /**
+     * Ban the model with the specified attributes.
+     */
     public function ban(array $attributes = []): Ban
     {
         return $this->bans()->create($attributes);
     }
 
+    /**
+     * Ban the model until the specified date.
+     */
     public function banUntil(string $date): Ban
     {
         return $this->ban([
@@ -46,11 +52,17 @@ trait Bannable
         ]);
     }
 
+    /**
+     * Unban the model by deleting all bans.
+     */
     public function unban(): void
     {
         $this->bans()->each(fn ($ban) => $ban->delete());
     }
 
+    /**
+     * Scope a query to include only models that are currently banned.
+     */
     public function scopeBanned(Builder $query): void
     {
         $query->whereHas('bans', function ($query) {
@@ -58,11 +70,17 @@ trait Bannable
         });
     }
 
+    /**
+     * Scope a query to include only models that are not currently banned.
+     */
     public function scopeNotBanned(Builder $query): void
     {
         $query->whereDoesntHave('bans');
     }
 
+    /**
+     * Scope a query to include only models with bans having a specific meta key and value.
+     */
     public function scopeWhereBansMeta(Builder $query, string $key, $value): void
     {
         $query->whereHas('bans', function ($query) use ($key, $value) {
@@ -70,6 +88,9 @@ trait Bannable
         });
     }
 
+    /**
+     * Scope a query to include only models with bans created by a specific type.
+     */
     public function scopeBannedByType(Builder $query, string $className): void
     {
         $query->whereHas('bans', function ($query) use ($className) {

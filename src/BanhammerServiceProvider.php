@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Mchev\Banhammer\Commands\ClearBans;
 use Mchev\Banhammer\Commands\DeleteExpired;
 use Mchev\Banhammer\Middleware\AuthBanned;
+use Mchev\Banhammer\Middleware\BlockByCountry;
 use Mchev\Banhammer\Middleware\IPBanned;
 use Mchev\Banhammer\Middleware\LogoutBanned;
 use Mchev\Banhammer\Models\Ban;
@@ -29,6 +30,10 @@ class BanhammerServiceProvider extends ServiceProvider
         $router->aliasMiddleware('ip.banned', IPBanned::class);
         $router->aliasMiddleware('logout.banned', LogoutBanned::class);
 
+        if (config('ban.block_by_country')) {
+            $router->pushMiddlewareToGroup('web', BlockByCountry::class);
+        }
+
         if ($this->app->runningInConsole()) {
             // Publishing the config.
             $this->publishes([
@@ -46,6 +51,7 @@ class BanhammerServiceProvider extends ServiceProvider
             $schedule = $this->app->make(Schedule::class);
             $schedule->command('banhammer:unban')->everyMinute();
         });
+
     }
 
     /**

@@ -36,7 +36,7 @@ You can publish the config file with:
 php artisan vendor:publish --tag="banhammer-config"
 ```
 
-It is possible to define the table name and the fallback_url in the `config/ban.php` file.
+It is possible to define the table name and the fallback_url in the `config/banhammer.php` file.
 
 ## Usage
 
@@ -178,6 +178,32 @@ $users->bans()->whereMeta('username', 'Jane')->get();
 $users->whereBansMeta('username', 'Jane')->get();
 ```
 
+### Blocking Access from Specific Countries
+
+To enhance the security of your application, you can restrict access from specific countries by enabling the country-blocking feature in the configuration file. Follow these simple steps:
+
+1. Open your Banhammer configuration file (config/ban.php).
+
+2. Set the 'block_by_country' configuration option to true to enable country-based blocking.
+
+```php
+'block_by_country' => true,
+```
+
+3. Specify the list of countries you want to block by adding their country codes to the 'blocked_countries' array.
+
+```php
+'blocked_countries' => ['FR', 'ES'],
+```
+
+By configuring these settings, you effectively block access to your application for users originating from the specified countries. This helps improve the security and integrity of your system by preventing unwanted traffic from regions you've identified as potential risks.
+
+**Important Notice:**
+The Banhammer package utilizes the free version of ip-api.com for geolocation data. Keep in mind that their endpoints have a rate limit of 45 HTTP requests per minute from a single IP address. If you exceed this limit, your requests will be throttled, and you may receive a 429 HTTP status code until your rate limit window is reset.
+
+**Developer Note:**
+While Banhammer currently relies on the free version of [ip-api.com](https://ip-api.com/) for geolocation data, I'm open to exploring better alternatives. If you have suggestions for a more robust or efficient solution, or if you'd like to contribute improvements, please feel free to [open an issue](https://github.com/mchev/banhammer/issues) or submit a [pull request](https://github.com/mchev/banhammer/pulls).
+
 ### Middleware
 To prevent banned users from accessing certain parts of your application, simply add the `auth.banned` middleware on the concerned routes.
 ```php
@@ -256,18 +282,18 @@ composer test
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Roadmap
+## Roadmap / Todo
 
-- [ ] Handle UUIDs and ULIDs
-- [ ] More tests
-- [ ] Block IP range
-- [ ] Auto block IP (Rate Limiting)
-- [x] Cache
-- [x] Ban history (expired, not expired)
+- [ ] Web page to dispay infos (ips banned, block by country enabled, etc.). Dev mode only
+- [ ] Block by country feature
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+To encourage active collaboration, Banhammer strongly encourages pull requests, not just bug reports. Pull requests will only be reviewed when marked as "ready for review" (not in the "draft" state) and all tests for new features are passing. Lingering, non-active pull requests left in the "draft" state will be closed after a few days.
+
+However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+
+Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. 
 
 ## Security Vulnerabilities
 

@@ -3,6 +3,7 @@
 namespace Mchev\Banhammer\Middleware;
 
 use Closure;
+use Mchev\Banhammer\Exceptions\BanhammerException;
 use Mchev\Banhammer\IP;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,9 +19,7 @@ class LogoutBanned
                 $request->session()->regenerateToken();
             }
 
-            return (config('ban.fallback_url'))
-                ? redirect(config('ban.fallback_url'))
-                : abort(403, config('ban.message'));
+            throw new BanhammerException(config('ban.messages.user'));
         }
 
         return $next($request);
