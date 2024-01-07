@@ -2,6 +2,10 @@
 
 All notable changes to `banhammer` will be documented in this file.
 
+## v2.0.0 - 2024-01-07
+
+This new version introduce the block by country middleware
+
 ## v1.2.0 - 2023-03-02
 
 - Adding Metas (cutom properties) to bans.
