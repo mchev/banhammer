@@ -66,6 +66,19 @@ return [
     |
     */
 
-    'blocked_countries' => [], // Examples: ['US', 'CA', 'GB']
+    'blocked_countries' => [], // Examples: ['US', 'CA', 'GB', 'FR', 'ES', 'DE']
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Duration for IP Geolocation
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option determines the duration, in minutes, for which
+    | the IP geolocation data will be stored in the cache. This helps prevent
+    | excessive requests and enables the middleware to efficiently determine
+    | whether to block a request based on the user's country.
+    |
+    */
+    'cache_duration' => 120, // Duration in minutes
 
 ];

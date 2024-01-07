@@ -9,12 +9,39 @@ Banhammer for Laravel offers a very simple way to ban any Model by ID and by IP.
 
 Banned models can have an expiration date and will be automatically unbanned using the Scheduler.
 
+## Table of Contents
+1. [Introduction](#banhammer-a-model-and-ip-ban-package-for-laravel)
+   - [Badges](#badges)
+2. [Version Compatibility](#version-compatibility)
+3. [Installation](#installation)
+   - [Composer Dependencies](#composer-dependencies)
+4. [Upgrading To 2.0 from 1.x](#upgrading-to-20-from-1x)
+   - [Composer Dependencies](#composer-dependencies-1)
+   - [Configuration Changes](#configuration-changes)
+5. [Usage](#usage)
+   - [Making a Model Bannable](#to-make-a-model-bannable-add-the-mchevbanhammertraitsbannable-trait-to-the-model)
+   - [Ban / Unban](#ban--unban)
+   - [IP](#ip)
+   - [Metas](#metas)
+   - [Blocking Access from Specific Countries](#blocking-access-from-specific-countries)
+   - [Middleware](#middleware)
+   - [Scheduler](#scheduler)
+   - [Events](#events)
+   - [Miscellaneous](#misc)
+6. [Testing](#testing)
+7. [Changelog](#changelog)
+8. [Roadmap / Todo](#roadmap--todo)
+9. [Contributing](#contributing)
+10. [Security Vulnerabilities](#security-vulnerabilities)
+11. [Credits](#credits)
+12. [License](#license)
+
 ## Version Compatibility
 
  Laravel        | Banhammer
 :---------------------|:----------
- ^9.0                 | 1.x.x
- ^10.0                | 1.x.x
+ ^9.0                 | 1.x, 2.x
+ ^10.0                | 1.x, 2.x
 
 ## Installation
 
@@ -36,7 +63,49 @@ You can publish the config file with:
 php artisan vendor:publish --tag="banhammer-config"
 ```
 
-It is possible to define the table name and the fallback_url in the `config/banhammer.php` file.
+It is possible to define the table name and the fallback_url in the `config/ban.php` file.
+
+## Upgrading To 2.0 from 1.x
+
+### Composer Dependencies
+
+To upgrade to Banhammer version 2.0, please follow these steps:
+
+1. Update the package version in your application's composer.json file:
+
+```json
+"require": {
+    "mchev/banhammer": "^2.0"
+}
+```
+
+Run the following command in your terminal:
+
+```bash
+composer update mchev/banhammer
+```
+
+### Configuration Changes
+
+1. Check the config/ban.php file and make the following corrections:
+```diff
+- 'message' => 'You have been banned.',
++ 'messages' => [
++     'user' => 'Your account has been banned.',
++     'ip' => 'Access from your IP address is restricted.',
++     'country' => 'Access from your country is restricted.',
++ ],
++
++ 'block_by_country' => env('BANHAMMER_BLOCK_BY_COUNTRY', false),
++
++ 'blocked_countries' => [], // Examples: ['US', 'CA', 'GB']
+```
+
+- Update the 'message' key to 'messages' and provide specific messages for user, IP, and country bans.
+- Introduce the 'block_by_country' configuration option to enable or disable country-based blocking.
+- Configure the list of 'blocked_countries' to specify the countries from which access is restricted.
+
+These changes ensure compatibility with Banhammer version 2.0 and allow for more granular control over ban messages and country-based restrictions. After making these adjustments, your application should seamlessly migrate to the latest version of Banhammer.
 
 ## Usage
 

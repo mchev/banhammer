@@ -33,12 +33,4 @@ class IpApiService
             return null;
         }
     }
-
-    /**
-     * Check if the country code is in the list of blocked countries.
-     */
-    public function isCountryBlocked(string $countryCode, array $blockedCountries): bool
-    {
-        return in_array($countryCode, $blockedCountries);
-    }
 }
