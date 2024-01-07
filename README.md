@@ -11,13 +11,9 @@ Banned models can have an expiration date and will be automatically unbanned usi
 
 ## Table of Contents
 1. [Introduction](#banhammer-a-model-and-ip-ban-package-for-laravel)
-   - [Badges](#badges)
 2. [Version Compatibility](#version-compatibility)
 3. [Installation](#installation)
-   - [Composer Dependencies](#composer-dependencies)
 4. [Upgrading To 2.0 from 1.x](#upgrading-to-20-from-1x)
-   - [Composer Dependencies](#composer-dependencies-1)
-   - [Configuration Changes](#configuration-changes)
 5. [Usage](#usage)
    - [Making a Model Bannable](#to-make-a-model-bannable-add-the-mchevbanhammertraitsbannable-trait-to-the-model)
    - [Ban / Unban](#ban--unban)
@@ -67,11 +63,9 @@ It is possible to define the table name and the fallback_url in the `config/ban.
 
 ## Upgrading To 2.0 from 1.x
 
-### Composer Dependencies
+To upgrade to Banhammer version 2.0, follow these simple steps:
 
-To upgrade to Banhammer version 2.0, please follow these steps:
-
-1. Update the package version in your application's composer.json file:
+1. Update the package version in your application's `composer.json` file:
 
 ```json
 "require": {
@@ -79,33 +73,21 @@ To upgrade to Banhammer version 2.0, please follow these steps:
 }
 ```
 
-Run the following command in your terminal:
+2. Run the following command in your terminal:
 
 ```bash
 composer update mchev/banhammer
 ```
 
-### Configuration Changes
+3. Update the configuration
 
-1. Check the config/ban.php file and make the following corrections:
-```diff
-- 'message' => 'You have been banned.',
-+ 'messages' => [
-+     'user' => 'Your account has been banned.',
-+     'ip' => 'Access from your IP address is restricted.',
-+     'country' => 'Access from your country is restricted.',
-+ ],
-+
-+ 'block_by_country' => env('BANHAMMER_BLOCK_BY_COUNTRY', false),
-+
-+ 'blocked_countries' => [], // Examples: ['US', 'CA', 'GB']
-```
-
-- Update the 'message' key to 'messages' and provide specific messages for user, IP, and country bans.
-- Introduce the 'block_by_country' configuration option to enable or disable country-based blocking.
-- Configure the list of 'blocked_countries' to specify the countries from which access is restricted.
-
-These changes ensure compatibility with Banhammer version 2.0 and allow for more granular control over ban messages and country-based restrictions. After making these adjustments, your application should seamlessly migrate to the latest version of Banhammer.
+    1. Update the configuration
+        - Backup your previous configuration file located at `config/ban.php`.
+        - Force republish the new configuration using the command: 
+        ```bash
+        php artisan vendor:publish --tag="banhammer-config" --force
+        ```
+        - Review the new configuration file and make any necessary edits.
 
 ## Usage
 
@@ -270,8 +252,8 @@ By configuring these settings, you effectively block access to your application 
 **Important Notice:**
 The Banhammer package utilizes the free version of ip-api.com for geolocation data. Keep in mind that their endpoints have a rate limit of 45 HTTP requests per minute from a single IP address. If you exceed this limit, your requests will be throttled, and you may receive a 429 HTTP status code until your rate limit window is reset.
 
-**Developer Note:**
-While Banhammer currently relies on the free version of [ip-api.com](https://ip-api.com/) for geolocation data, I'm open to exploring better alternatives. If you have suggestions for a more robust or efficient solution, or if you'd like to contribute improvements, please feel free to [open an issue](https://github.com/mchev/banhammer/issues) or submit a [pull request](https://github.com/mchev/banhammer/pulls).
+> **Developer Note:**
+> While Banhammer currently relies on the free version of [ip-api.com](https://ip-api.com/) for geolocation data, I'm open to exploring better alternatives. If you have suggestions for a more robust or efficient solution, or if you'd like to contribute improvements, please feel free to [open an issue](https://github.com/mchev/banhammer/issues) or submit a [pull request](https://github.com/mchev/banhammer/pulls).
 
 ### Middleware
 To prevent banned users from accessing certain parts of your application, simply add the `auth.banned` middleware on the concerned routes.
@@ -353,8 +335,8 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Roadmap / Todo
 
-- [ ] Web page to dispay infos (ips banned, block by country enabled, etc.). Dev mode only
-- [ ] Block by country feature
+- [ ] Laravel pulse card (ips banned, block by country enabled, etc.).
+- [x] Block by country feature
 
 ## Contributing
 
