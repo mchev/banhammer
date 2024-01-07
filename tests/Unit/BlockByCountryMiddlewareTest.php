@@ -4,12 +4,11 @@ namespace Mchev\Banhammer\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Mchev\Banhammer\Exceptions\BanhammerException;
 use Mchev\Banhammer\Middleware\BlockByCountry;
 use Mchev\Banhammer\Services\IpApiService;
-use Mockery;
 use Mchev\Banhammer\Tests\TestCase;
+use Mockery;
 
 class BlockByCountryMiddlewareTest extends TestCase
 {

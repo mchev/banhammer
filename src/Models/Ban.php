@@ -30,7 +30,7 @@ class Ban extends Model
 
     protected function expiredAt(): Attribute
     {
-        return Attribute::make(
+        return new Attribute(
             set: fn (null|string|Carbon $value) => (! is_null($value) && ! $value instanceof Carbon) ? Carbon::parse($value) : $value,
         );
     }
