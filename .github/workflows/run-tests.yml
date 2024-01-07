@@ -22,6 +22,8 @@ jobs:
           - laravel: 9.*
             testbench: ^7.0
         exclude:
+          - laravel: 9.*
+            php: 8.3
           - laravel: 10.*
             php: 8.0
 
