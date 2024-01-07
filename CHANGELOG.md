@@ -2,6 +2,15 @@
 
 All notable changes to `banhammer` will be documented in this file.
 
+## v2.1.0 - 2024-01-07
+
+- [feature request]: Expiration date for banned IPs #10
+  Is it now possible to add an expiration date when banning an IP (or multiple)
+
+```
+IP::ban("8.8.8.8", [], now()->addMinutes(10));
+
+```
 ## v2.0.0 - 2024-01-07
 
 This new version introduce the block by country middleware
