@@ -40,6 +40,11 @@ class BanhammerServiceProvider extends ServiceProvider
                 __DIR__.'/../config/config.php' => config_path('ban.php'),
             ], 'banhammer-config');
 
+            // Publishing migrations
+            // $this->publishes([
+            //     __DIR__.'/../database/migrations' => database_path('migrations'),
+            // ], 'banhammer-migrations');
+
             // Registering package commands.
             $this->commands([
                 ClearBans::class,
