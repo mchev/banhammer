@@ -2,6 +2,10 @@
 
 All notable changes to `banhammer` will be documented in this file.
 
+## v2.2.0 - 2024-03-12
+
+- Laravel 11 support
+
 ## v2.1.0 - 2024-01-07
 
 - [feature request]: Expiration date for banned IPs #10
@@ -9,6 +13,7 @@ All notable changes to `banhammer` will be documented in this file.
 
 ```
 IP::ban("8.8.8.8", [], now()->addMinutes(10));
+
 
 ```
 ## v2.0.0 - 2024-01-07
