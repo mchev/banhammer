@@ -38,6 +38,7 @@ Banned models can have an expiration date and will be automatically unbanned usi
 :---------------------|:----------
  ^9.0                 | 1.x, 2.x
  ^10.0                | 1.x, 2.x
+ ^11.0                | 1.x, 2.x
 
 ## Installation
 
