@@ -35,11 +35,7 @@ Banned models can have an expiration date and will be automatically unbanned usi
 
 ## Version Compatibility
 
- Laravel        | Banhammer
-:---------------------|:----------
- ^9.0                 | 1.x, 2.x
- ^10.0                | 1.x, 2.x
- ^11.0                | 1.x, 2.x
+Compatible with Laravel 9, 10, 11 and 12.
 
 ## Installation
 
