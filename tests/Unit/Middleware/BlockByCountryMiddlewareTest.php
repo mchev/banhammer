@@ -71,11 +71,14 @@ class BlockByCountryMiddlewareTest extends TestCase
             ->shouldReceive('getGeolocationData')
             ->once()
             ->with('1.1.1.1')
-            ->andReturn(['status' => 'fail']);
+            ->andReturn(['status' => 'fail', 'message' => 'API Error']);
             
-        $response = $this->middleware->handle($request, function ($req) {
+        // The middleware should allow the request to pass through when API fails
+        $next = function ($request) {
             return response('OK');
-        });
+        };
+        
+        $response = $this->middleware->handle($request, $next);
         
         $this->assertEquals('OK', $response->getContent());
     }
@@ -141,8 +144,9 @@ class BlockByCountryMiddlewareTest extends TestCase
     {
         config(['ban.block_by_country' => true]);
         config(['ban.blocked_countries' => ['FR']]);
-        $ip = '1.1.1.1';
+        config(['ban.cache_duration' => 120]); // Ensure cache duration is set
         
+        $ip = '1.1.1.1';
         $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
         
         $this->ipApiService
@@ -151,11 +155,33 @@ class BlockByCountryMiddlewareTest extends TestCase
             ->with($ip)
             ->andReturn(['status' => 'success', 'countryCode' => 'US']);
 
-        $response = $this->middleware->handle($request, function ($req) {
+        // Execute middleware
+        $this->middleware->handle($request, function ($req) {
             return response('OK');
         });
         
-        $this->assertEquals('US', Cache::get("country_$ip"));
-        $this->assertEquals('OK', $response->getContent());
+        // Verify the cache
+        $cacheKey = "country_$ip";
+        $this->assertTrue(Cache::has($cacheKey), "Cache key '$cacheKey' not found");
+        $this->assertEquals('US', Cache::get($cacheKey), "Cached country code doesn't match expected value");
+    }
+
+    public function test_middleware_uses_cached_country_code(): void
+    {
+        config(['ban.block_by_country' => true]);
+        config(['ban.blocked_countries' => ['US']]);
+        
+        $ip = '1.1.1.1';
+        Cache::put("country_$ip", 'US', now()->addMinutes(120));
+        
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
+        
+        // The service should not be called since we're using cached value
+        $this->ipApiService->shouldNotReceive('getGeolocationData');
+        
+        $this->expectException(BanhammerException::class);
+        $this->expectExceptionMessage(config('ban.messages.country'));
+        
+        $this->middleware->handle($request, function () {});
     }
 } 
