@@ -26,6 +26,12 @@ class BlockByCountryMiddlewareTest extends TestCase
         Cache::flush();
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        Mockery::close();
+    }
+
     public function test_middleware_skips_when_feature_disabled(): void
     {
         config(['ban.block_by_country' => false]);
@@ -46,6 +52,11 @@ class BlockByCountryMiddlewareTest extends TestCase
         
         $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.1.1.1']);
         
+        $this->ipApiService
+            ->shouldReceive('getGeolocationData')
+            ->once()
+            ->andReturn(['status' => 'success', 'countryCode' => 'US']);
+
         $response = $this->middleware->handle($request, function ($req) {
             return response('OK');
         });
@@ -56,14 +67,15 @@ class BlockByCountryMiddlewareTest extends TestCase
     public function test_middleware_handles_api_error(): void
     {
         config(['ban.block_by_country' => true]);
-        config(['ban.blocked_countries' => ['US']]);
+        config(['ban.blocked_countries' => ['FR']]);
+        
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.1.1.1']);
         
         $this->ipApiService
             ->shouldReceive('getGeolocationData')
+            ->once()
             ->andReturn(['status' => 'fail']);
             
-        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.1.1.1']);
-        
         $response = $this->middleware->handle($request, function ($req) {
             return response('OK');
         });
@@ -71,18 +83,59 @@ class BlockByCountryMiddlewareTest extends TestCase
         $this->assertEquals('OK', $response->getContent());
     }
 
+    public function test_middleware_blocks_request_from_blocked_country(): void
+    {
+        config(['ban.block_by_country' => true]);
+        config(['ban.blocked_countries' => ['FR']]);
+        
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.1.1.1']);
+        
+        $this->ipApiService
+            ->shouldReceive('getGeolocationData')
+            ->once()
+            ->andReturn(['status' => 'success', 'countryCode' => 'FR']);
+
+        $this->expectException(BanhammerException::class);
+        $this->expectExceptionMessage('Access from your country is restricted.');
+        
+        $this->middleware->handle($request, function () {});
+    }
+
     public function test_middleware_uses_cached_results(): void
     {
         config(['ban.block_by_country' => true]);
-        config(['ban.blocked_countries' => ['US']]);
+        config(['ban.blocked_countries' => ['FR']]);
         
         $ip = '1.1.1.1';
-        Cache::put("country_$ip", 'US', now()->addHour());
+        Cache::put("country_$ip", 'FR', now()->addHour());
         
         $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
         
+        $this->ipApiService
+            ->shouldNotReceive('getGeolocationData'); // Service should not be called when cache exists
+        
         $this->expectException(BanhammerException::class);
+        $this->expectExceptionMessage('Access from your country is restricted.');
         
         $this->middleware->handle($request, function () {});
+    }
+
+    public function test_middleware_allows_non_blocked_country(): void
+    {
+        config(['ban.block_by_country' => true]);
+        config(['ban.blocked_countries' => ['FR']]);
+        
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.1.1.1']);
+        
+        $this->ipApiService
+            ->shouldReceive('getGeolocationData')
+            ->once()
+            ->andReturn(['status' => 'success', 'countryCode' => 'US']);
+
+        $response = $this->middleware->handle($request, function ($req) {
+            return response('OK');
+        });
+        
+        $this->assertEquals('OK', $response->getContent());
     }
 } 
