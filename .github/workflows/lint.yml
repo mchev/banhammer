@@ -1,9 +1,17 @@
 name: Fix Code Style
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["tests"]
+    types:
+      - completed
+    branches:
+      - 2.x
 
 jobs:
   lint:
+    # Only run if the tests workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -13,6 +21,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
