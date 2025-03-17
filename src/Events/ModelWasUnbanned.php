@@ -6,7 +6,5 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ModelWasUnbanned implements ShouldQueue
 {
-    public function __construct(public $model)
-    {
-    }
+    public function __construct(public $model) {}
 }
