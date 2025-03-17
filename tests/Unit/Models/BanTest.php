@@ -2,10 +2,10 @@
 
 namespace Mchev\Banhammer\Tests\Unit\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\Tests\TestCase;
-use Carbon\Carbon;
 
 class BanTest extends TestCase
 {
@@ -13,17 +13,17 @@ class BanTest extends TestCase
 
     public function test_expired_at_attribute_casting(): void
     {
-        $ban = new Ban();
-        
+        $ban = new Ban;
+
         // Test with string date
         $ban->expired_at = '2024-01-01 00:00:00';
         $this->assertInstanceOf(Carbon::class, $ban->expired_at);
-        
+
         // Test with Carbon instance
         $date = now();
         $ban->expired_at = $date;
         $this->assertEquals($date, $ban->expired_at);
-        
+
         // Test with null
         $ban->expired_at = null;
         $this->assertNull($ban->expired_at);
@@ -33,7 +33,7 @@ class BanTest extends TestCase
     {
         Ban::create(['ip' => '1.1.1.1']); // Permanent ban
         Ban::create(['ip' => '2.2.2.2', 'expired_at' => now()->addDay()]);
-        
+
         $this->assertCount(1, Ban::permanent()->get());
     }
 
@@ -41,7 +41,7 @@ class BanTest extends TestCase
     {
         Ban::create(['ip' => '1.1.1.1']); // Permanent ban
         Ban::create(['ip' => '2.2.2.2', 'expired_at' => now()->addDay()]);
-        
+
         $this->assertCount(1, Ban::notPermanent()->get());
     }
 
@@ -49,7 +49,7 @@ class BanTest extends TestCase
     {
         Ban::create(['ip' => '1.1.1.1', 'expired_at' => now()->subDay()]);
         Ban::create(['ip' => '2.2.2.2', 'expired_at' => now()->addDay()]);
-        
+
         $this->assertCount(1, Ban::expired()->get());
     }
 
@@ -58,7 +58,7 @@ class BanTest extends TestCase
         Ban::create(['ip' => '1.1.1.1']); // Permanent ban
         Ban::create(['ip' => '2.2.2.2', 'expired_at' => now()->subDay()]);
         Ban::create(['ip' => '3.3.3.3', 'expired_at' => now()->addDay()]);
-        
+
         $this->assertCount(2, Ban::notExpired()->get());
     }
 
@@ -67,18 +67,18 @@ class BanTest extends TestCase
         // Create the test records
         $ban1 = Ban::create([
             'ip' => '1.1.1.1',
-            'metas' => json_encode(['reason' => 'spam', 'severity' => 'high'])
+            'metas' => json_encode(['reason' => 'spam', 'severity' => 'high']),
         ]);
-        
+
         $ban2 = Ban::create([
             'ip' => '2.2.2.2',
-            'metas' => json_encode(['reason' => 'abuse', 'severity' => 'low'])
+            'metas' => json_encode(['reason' => 'abuse', 'severity' => 'low']),
         ]);
-        
+
         // Use basic where clause instead of JSON contains
         $spamBans = Ban::where('metas', 'LIKE', '%spam%')->get();
         $highSeverityBans = Ban::where('metas', 'LIKE', '%high%')->get();
-        
+
         $this->assertCount(1, $spamBans);
         $this->assertCount(1, $highSeverityBans);
     }
@@ -87,22 +87,22 @@ class BanTest extends TestCase
     {
         $ban = Ban::create([
             'ip' => '1.1.1.1',
-            'metas' => ['reason' => 'spam']
+            'metas' => ['reason' => 'spam'],
         ]);
-        
+
         $this->assertTrue($ban->hasMeta('reason'));
         $this->assertFalse($ban->hasMeta('nonexistent'));
     }
 
-    public function test_morphTo_relationships(): void
+    public function test_morph_to_relationships(): void
     {
         $ban = Ban::create([
             'ip' => '1.1.1.1',
             'created_by_type' => 'App\Models\User',
-            'created_by_id' => 1
+            'created_by_id' => 1,
         ]);
-        
+
         $this->assertEquals('App\Models\User', $ban->created_by_type);
         $this->assertEquals(1, $ban->created_by_id);
     }
-} 
+}

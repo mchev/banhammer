@@ -3,11 +3,10 @@
 namespace Mchev\Banhammer\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Mchev\Banhammer\IP;
 use Mchev\Banhammer\Models\Ban;
 use Mchev\Banhammer\Tests\TestCase;
-use Illuminate\Support\Facades\Cache;
-use Carbon\Carbon;
 
 class IPBanTest extends TestCase
 {
@@ -44,7 +43,7 @@ class IPBanTest extends TestCase
     {
         $expiration = now()->addDay();
         IP::ban($this->ip, [], $expiration);
-        
+
         $ban = Ban::where('ip', $this->ip)->first();
         $this->assertEquals($expiration->format('Y-m-d H:i:s'), $ban->expired_at->format('Y-m-d H:i:s'));
     }
@@ -53,7 +52,7 @@ class IPBanTest extends TestCase
     {
         $metas = ['reason' => 'spam', 'severity' => 'high'];
         IP::ban($this->ip, $metas);
-        
+
         $ban = Ban::where('ip', $this->ip)->first();
         $this->assertEquals($metas, $ban->metas);
     }
@@ -79,7 +78,7 @@ class IPBanTest extends TestCase
     {
         IP::ban($this->ip);
         $this->assertTrue(IP::isBanned($this->ip));
-        
+
         IP::unban($this->ip);
         $this->assertFalse(IP::isBanned($this->ip));
     }
