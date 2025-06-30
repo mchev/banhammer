@@ -45,7 +45,7 @@ class IPBanTest extends TestCase
         IP::ban($this->ip, [], $expiration);
 
         $ban = Ban::where('ip', $this->ip)->first();
-        $this->assertEquals($expiration->format('Y-m-d H:i:s'), $ban->expired_at->format('Y-m-d H:i:s'));
+        $this->assertSame($expiration->format('Y-m-d H:i:s'), $ban->expired_at->format('Y-m-d H:i:s'));
     }
 
     public function test_ip_ban_with_metas(): void
@@ -54,7 +54,7 @@ class IPBanTest extends TestCase
         IP::ban($this->ip, $metas);
 
         $ban = Ban::where('ip', $this->ip)->first();
-        $this->assertEquals($metas, $ban->metas);
+        $this->assertSame($metas, $ban->metas);
     }
 
     public function test_ip_is_unbanned(): void
@@ -94,7 +94,7 @@ class IPBanTest extends TestCase
         // Test when cache exists
         $cachedIps = ['1.1.1.1', '2.2.2.2'];
         Cache::put('banned-ips', $cachedIps);
-        $this->assertEquals($cachedIps, IP::getBannedIPsFromCache());
+        $this->assertSame($cachedIps, IP::getBannedIPsFromCache());
 
         // Test when cache doesn't exist
         Cache::forget('banned-ips');

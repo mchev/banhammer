@@ -12,7 +12,7 @@ class LogoutBanned
     public function handle($request, Closure $next): Response
     {
         $userBanned = $request->user() && $request->user()->isBanned();
-        $ipBanned = $request->ip() && in_array($request->ip(), IP::getBannedIPsFromCache());
+        $ipBanned = $request->ip() && in_array($request->ip(), $this->getBannedIPsFromCache());
 
         if ($userBanned || $ipBanned) {
             if ($userBanned) {
@@ -26,5 +26,10 @@ class LogoutBanned
         }
 
         return $next($request);
+    }
+
+    protected function getBannedIPsFromCache()
+    {
+        return IP::getBannedIPsFromCache();
     }
 }

@@ -38,8 +38,7 @@ class BlockByCountryMiddlewareTest extends TestCase
         Mockery::close();
     }
 
-    /** @test */
-    public function it_allows_request_from_non_blocked_country()
+    public function test_allows_request_from_non_blocked_country()
     {
         // Given
         $ip = '100.42.30.255'; // IP from a country not in the blocked list
@@ -62,11 +61,10 @@ class BlockByCountryMiddlewareTest extends TestCase
         });
 
         // Then
-        $this->assertEquals('success', json_decode($response->getContent(), true)['status']);
+        $this->assertSame('success', json_decode($response->getContent(), true)['status']);
     }
 
-    /** @test */
-    public function it_blocks_request_from_blocked_country()
+    public function test_blocks_request_from_blocked_country()
     {
         // Given
         $ip = '100.42.30.255'; // IP from a blocked country
@@ -90,8 +88,7 @@ class BlockByCountryMiddlewareTest extends TestCase
         });
     }
 
-    /** @test */
-    public function it_allows_request_when_country_check_fails()
+    public function test_allows_request_when_country_check_fails()
     {
         // Given
         $ip = '100.42.30.255'; // IP from a country not in the blocked list
@@ -114,11 +111,10 @@ class BlockByCountryMiddlewareTest extends TestCase
         });
 
         // Then
-        $this->assertEquals('success', json_decode($response->getContent(), true)['status']);
+        $this->assertSame('success', json_decode($response->getContent(), true)['status']);
     }
 
-    /** @test */
-    public function it_allows_request_when_cache_is_present()
+    public function test_allows_request_when_cache_is_present()
     {
         // Given
         $ip = '100.42.30.255'; // IP from a country not in the blocked list

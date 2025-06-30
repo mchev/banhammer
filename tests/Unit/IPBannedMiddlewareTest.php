@@ -29,7 +29,36 @@ class IPBannedMiddlewareTest extends TestCase
                 //
             });
         } catch (BanhammerException $e) {
-            $this->assertEquals(403, $e->getStatusCode());
+            $this->assertSame(403, $e->getStatusCode());
         }
+    }
+
+    public function test_logs_and_rethrows_on_exception(): void
+    {
+        $middleware = $this->getMockBuilder(\Mchev\Banhammer\Middleware\IPBanned::class)
+            ->onlyMethods(['getBannedIPsFromCache'])
+            ->getMock();
+        $middleware->expects($this->once())
+            ->method('getBannedIPsFromCache')
+            ->will($this->throwException(new \Exception('cache error')));
+        $request = \Illuminate\Http\Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.2.3.4']);
+        \Illuminate\Support\Facades\Log::shouldReceive('error')
+            ->once()
+            ->withArgs(fn ($msg, $context) => str_contains($msg, 'IPBanned Middleware Exception: cache error') && isset($context['exception']));
+        $this->expectException(\Exception::class);
+        $middleware->handle($request, fn ($req) => response('ok'));
+    }
+
+    public function test_non_banned_ip_passes_through(): void
+    {
+        $middleware = $this->getMockBuilder(\Mchev\Banhammer\Middleware\IPBanned::class)
+            ->onlyMethods(['getBannedIPsFromCache'])
+            ->getMock();
+        $middleware->expects($this->once())
+            ->method('getBannedIPsFromCache')
+            ->willReturn(['1.2.3.4']);
+        $request = \Illuminate\Http\Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '5.6.7.8']);
+        $response = $middleware->handle($request, fn ($req) => response('ok'));
+        $this->assertSame('ok', $response->getContent());
     }
 }

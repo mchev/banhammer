@@ -102,7 +102,55 @@ class BanTest extends TestCase
             'created_by_id' => 1,
         ]);
 
-        $this->assertEquals('App\Models\User', $ban->created_by_type);
-        $this->assertEquals(1, $ban->created_by_id);
+        $this->assertSame('App\Models\User', $ban->created_by_type);
+        $this->assertSame(1, $ban->created_by_id);
+    }
+
+    public function test_get_meta_returns_value_and_default(): void
+    {
+        $ban = Ban::create([
+            'ip' => '1.1.1.1',
+            'metas' => ['reason' => 'spam', 'details' => ['severity' => 'high']],
+        ]);
+        $this->assertSame('spam', $ban->getMeta('reason'));
+        $this->assertSame('high', $ban->getMeta('details.severity'));
+        $this->assertNull($ban->getMeta('nonexistent'));
+        $this->assertSame('default', $ban->getMeta('nonexistent', 'default'));
+    }
+
+    public function test_set_meta_sets_value_and_nested_value(): void
+    {
+        $ban = Ban::create([
+            'ip' => '1.1.1.1',
+            'metas' => [],
+        ]);
+        $ban->setMeta('foo', 'bar');
+        $this->assertSame('bar', $ban->getMeta('foo'));
+        $ban->setMeta('nested.key', 'value');
+        $this->assertSame('value', $ban->getMeta('nested.key'));
+    }
+
+    public function test_forget_meta_removes_value_and_nested_value(): void
+    {
+        $ban = Ban::create([
+            'ip' => '1.1.1.1',
+            'metas' => ['foo' => 'bar', 'nested' => ['key' => 'value']],
+        ]);
+        $ban->forgetMeta('foo');
+        $this->assertNull($ban->getMeta('foo'));
+        $ban->forgetMeta('nested.key');
+        $this->assertNull($ban->getMeta('nested.key'));
+    }
+
+    public function test_metas_edge_cases(): void
+    {
+        $ban = Ban::create([
+            'ip' => '1.1.1.1',
+            'metas' => null,
+        ]);
+        $this->assertFalse($ban->hasMeta('foo'));
+        $this->assertNull($ban->getMeta('foo'));
+        $ban->setMeta('foo', 'bar');
+        $this->assertSame('bar', $ban->getMeta('foo'));
     }
 }

@@ -7,12 +7,11 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    protected function getEnvironmentSetUp($app): void
+    protected function defineEnvironment($app): void
     {
         // Load the .env file
         $app->useEnvironmentPath(__DIR__.'/..');
         $app->bootstrapWith([LoadEnvironmentVariables::class]);
-        parent::getEnvironmentSetUp($app);
     }
 
     protected function getPackageProviders($app): array
@@ -22,9 +21,13 @@ abstract class TestCase extends Orchestra
         ];
     }
 
+    protected function defineDatabase($app)
+    {
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+    }
+
     protected function defineDatabaseMigrations()
     {
-        // $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }

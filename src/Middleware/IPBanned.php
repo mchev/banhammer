@@ -13,7 +13,7 @@ class IPBanned
     public function handle($request, Closure $next): Response
     {
         try {
-            $bannedIPs = IP::getBannedIPsFromCache();
+            $bannedIPs = $this->getBannedIPsFromCache();
 
             if ($request->ip() && in_array($request->ip(), $bannedIPs)) {
                 throw new BanhammerException(config('ban.messages.ip'));
@@ -26,5 +26,10 @@ class IPBanned
         }
 
         return $next($request);
+    }
+
+    protected function getBannedIPsFromCache()
+    {
+        return IP::getBannedIPsFromCache();
     }
 }
