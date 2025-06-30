@@ -11,15 +11,18 @@ class LogoutBanned
 {
     public function handle($request, Closure $next): Response
     {
-        if ($request->user() && $request->user()->isBanned()
-            || $request->ip() && in_array($request->ip(), IP::getBannedIPsFromCache())) {
-            if ($request->user()) {
+        $userBanned = $request->user() && $request->user()->isBanned();
+        $ipBanned = $request->ip() && in_array($request->ip(), IP::getBannedIPsFromCache());
+
+        if ($userBanned || $ipBanned) {
+            if ($userBanned) {
                 auth()->logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
+                throw new BanhammerException(config('ban.messages.user'));
+            } elseif ($ipBanned) {
+                throw new BanhammerException(config('ban.messages.ip'));
             }
-
-            throw new BanhammerException(config('ban.messages.user'));
         }
 
         return $next($request);

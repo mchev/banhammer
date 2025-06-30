@@ -1,7 +1,7 @@
 # Banhammer, a Model, IP and Country ban package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
-[![GitHub Tests Action Status](https://github.com/laravel/pint/workflows/tests/badge.svg)](https://github.com/mchev/banhammer/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://github.com/laravel/pint/workflows/tests/badge.svg)](https://github.com/mchev/banhammer/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
 [![Package for laravel](https://img.shields.io/badge/Package%20for%20Laravel-grey.svg?style=flat-square&logo=laravel&logoColor=white)](https://packagist.org/packages/mchev/banhammer)
 
