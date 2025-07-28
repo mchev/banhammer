@@ -9,10 +9,13 @@ class IP
 {
     public static function ban(string|array $ips, array $metas = [], ?string $date = null): void
     {
-        $bannedIps = self::getBannedIPsFromCache();
-
         foreach ((array) $ips as $ip) {
-            if (! in_array($ip, $bannedIps)) {
+            // Check if IP is already banned and not expired by querying database directly
+            $existingBan = config('ban.model')::where('ip', $ip)
+                ->notExpired()
+                ->first();
+
+            if (! $existingBan) {
                 config('ban.model')::create([
                     'ip' => $ip,
                     'metas' => count($metas) ? $metas : null,
@@ -26,11 +29,14 @@ class IP
     {
         $ips = (array) $ips;
         config('ban.model')::whereIn('ip', $ips)->delete();
-        Cache::put('banned-ips', self::banned()->pluck('ip')->toArray());
+        Cache::forget('banned-ips');
+        Cache::forget('banned-ips-with-expiration');
     }
 
     public static function isBanned(string $ip): bool
     {
+        // For now, use database query directly to ensure accuracy
+        // TODO: Optimize with proper cache implementation
         return config('ban.model')::where('ip', $ip)
             ->notExpired()
             ->exists();
@@ -45,8 +51,21 @@ class IP
 
     public static function getBannedIPsFromCache(): array
     {
-        return Cache::has('banned-ips')
-            ? Cache::get('banned-ips')
-            : self::banned()->pluck('ip')->unique()->toArray();
+        return Cache::remember('banned-ips', now()->addMinutes(5), function () {
+            return self::banned()->pluck('ip')->unique()->toArray();
+        });
+    }
+
+    public static function getBannedIPsWithExpiration(): array
+    {
+        return Cache::remember('banned-ips-with-expiration', now()->addMinutes(5), function () {
+            return config('ban.model')::whereNotNull('ip')
+                ->select('ip', 'expired_at')
+                ->get()
+                ->mapWithKeys(function ($ban) {
+                    return [$ban->ip => $ban->expired_at?->timestamp];
+                })
+                ->toArray();
+        });
     }
 }

@@ -5,7 +5,6 @@ namespace Mchev\Banhammer\Observers;
 use Illuminate\Support\Facades\Cache;
 use Mchev\Banhammer\Events\ModelWasBanned;
 use Mchev\Banhammer\Events\ModelWasUnbanned;
-use Mchev\Banhammer\IP;
 
 class BanObserver
 {
@@ -35,7 +34,8 @@ class BanObserver
     public function updateCachedIps($ban): void
     {
         if ($ban->ip) {
-            Cache::put('banned-ips', IP::banned()->pluck('ip')->unique()->toArray());
+            Cache::forget('banned-ips');
+            Cache::forget('banned-ips-with-expiration');
         }
     }
 }

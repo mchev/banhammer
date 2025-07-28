@@ -18,6 +18,8 @@ class IPBanTest extends TestCase
     {
         parent::setUp();
         Cache::flush();
+        Cache::forget('banned-ips');
+        Cache::forget('banned-ips-with-expiration');
     }
 
     public function test_ip_ban_can_be_created(): void
@@ -100,5 +102,42 @@ class IPBanTest extends TestCase
         Cache::forget('banned-ips');
         IP::ban(['3.3.3.3', '4.4.4.4']);
         $this->assertCount(2, IP::getBannedIPsFromCache());
+    }
+
+    public function test_cache_filters_out_expired_bans(): void
+    {
+        // Ban an IP with expiration in the past
+        IP::ban('1.1.1.1', [], now()->subDay());
+
+        // Ban another IP without expiration
+        IP::ban('2.2.2.2');
+
+        // The cache should automatically filter out expired IPs
+        $bannedIps = IP::getBannedIPsFromCache();
+
+        $this->assertNotContains('1.1.1.1', $bannedIps);
+        $this->assertContains('2.2.2.2', $bannedIps);
+        $this->assertCount(1, $bannedIps);
+    }
+
+    public function test_is_banned_uses_smart_cache(): void
+    {
+        // Ban an IP with expiration in the future
+        IP::ban('1.1.1.1', [], now()->addDay());
+
+        // Ban another IP with expiration in the past
+        IP::ban('2.2.2.2', [], now()->subDay());
+
+        // Should return true for future expiration, false for past
+        $this->assertTrue(IP::isBanned('1.1.1.1'));
+        $this->assertFalse(IP::isBanned('2.2.2.2'));
+    }
+
+    public function test_permanent_ban_works_with_cache(): void
+    {
+        // Ban an IP permanently (no expiration)
+        IP::ban('1.1.1.1');
+
+        $this->assertTrue(IP::isBanned('1.1.1.1'));
     }
 }

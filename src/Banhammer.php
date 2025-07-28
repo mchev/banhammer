@@ -9,7 +9,14 @@ class Banhammer
     public static function unbanExpired(): void
     {
         config('ban.model')::expired()->delete();
-        Cache::put('banned-ips', IP::banned()->pluck('ip')->toArray());
+        Cache::forget('banned-ips');
+        Cache::forget('banned-ips-with-expiration');
+    }
+
+    public static function cleanExpiredCache(): void
+    {
+        Cache::forget('banned-ips');
+        Cache::forget('banned-ips-with-expiration');
     }
 
     public static function clear(): void
