@@ -92,4 +92,8 @@ return [
     */
     'cache_duration' => 120, // Duration in minutes
 
+
+    'auto_schedule' => true,
+    'schedule_frequency' => 'everyMinute',
+
 ];
