@@ -50,8 +50,11 @@ class BanhammerServiceProvider extends ServiceProvider
         }
 
         $this->app->booted(function () {
-            $schedule = $this->app->make(Schedule::class);
-            $schedule->command('banhammer:unban')->everyMinute();
+            if (config('ban.auto_schedule', true)) {
+                $schedule = $this->app->make(Schedule::class);
+                $frequency = config('ban.schedule_frequency', 'everyMinute');
+                $schedule->command('banhammer:unban')->$frequency();
+            }
         });
 
     }
