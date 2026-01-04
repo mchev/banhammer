@@ -92,4 +92,29 @@ return [
     */
     'cache_duration' => 120, // Duration in minutes
 
+    /*
+    |--------------------------------------------------------------------------
+    | Scheduler Enabled
+    |--------------------------------------------------------------------------
+    |
+    | Determine whether to automatically register the scheduled command for
+    | deleting expired bans. When enabled, the 'banhammer:unban' command will
+    | be automatically scheduled based on the 'scheduler_periodicity' setting.
+    |
+    */
+    'scheduler_enabled' => env('BANHAMMER_SCHEDULER_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scheduler Periodicity
+    |--------------------------------------------------------------------------
+    |
+    | Specify how often the 'banhammer:unban' command should run. This accepts
+    | any valid Laravel scheduler method name. Common options include:
+    | 'everyMinute', 'everyFiveMinutes', 'everyTenMinutes', 'everyFifteenMinutes',
+    | 'everyThirtyMinutes', 'hourly', 'daily', etc.
+    |
+    */
+    'scheduler_periodicity' => env('BANHAMMER_SCHEDULER_PERIODICITY', 'everyMinute'),
+
 ];

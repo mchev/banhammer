@@ -13,8 +13,7 @@ class IPBannedMiddlewareTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_blocks_the_banned_ip()
+    public function test_it_blocks_the_banned_ip(): void
     {
         // $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
