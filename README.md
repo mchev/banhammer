@@ -280,6 +280,38 @@ In order to be able to automatically delete expired bans, you must have a cron j
 
 > [Configure Scheduler on Forge](https://forge.laravel.com/docs/1.0/resources/scheduler.html#laravel-scheduled-jobs)
 
+By default, Banhammer automatically registers the `banhammer:unban` command to run every minute via Laravel's scheduler. You can control this behavior using the following configuration options:
+
+**Disable the automatic scheduler:**
+
+If you prefer to manually schedule the command yourself, you can disable the automatic registration by setting:
+
+```php
+// config/ban.php
+'scheduler_enabled' => false,
+```
+
+Or via environment variable:
+
+```env
+BANHAMMER_SCHEDULER_ENABLED=false
+```
+
+**Change the scheduler frequency:**
+
+You can customize how often the command runs by setting the `scheduler_periodicity` option. This accepts any valid Laravel scheduler method name:
+
+```php
+// config/ban.php
+'scheduler_periodicity' => 'everyFiveMinutes', // or 'hourly', 'daily', etc.
+```
+
+Or via environment variable:
+
+```env
+BANHAMMER_SCHEDULER_PERIODICITY=everyFiveMinutes
+```
+
 ### Events
 
 If entity is banned `Mchev\Banhammer\Events\ModelWasBanned` event is fired.
