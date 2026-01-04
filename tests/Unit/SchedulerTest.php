@@ -25,9 +25,9 @@ class SchedulerTest extends TestCase
         $property = $reflection->getProperty('bootedCallbacks');
         $property->setAccessible(true);
         $callbacks = $property->getValue($this->app);
-        
+
         // Only fire the last callback (the one we just registered)
-        if (!empty($callbacks)) {
+        if (! empty($callbacks)) {
             $lastCallback = end($callbacks);
             $lastCallback($this->app);
         }
@@ -49,7 +49,7 @@ class SchedulerTest extends TestCase
     {
         // Clear schedule first
         $this->clearSchedule();
-        
+
         // Ensure default config BEFORE booting
         config(['ban.scheduler_enabled' => true]);
         config(['ban.scheduler_periodicity' => 'everyMinute']);
@@ -57,13 +57,13 @@ class SchedulerTest extends TestCase
         // Get the service provider and manually trigger boot
         $provider = $this->app->getProvider('Mchev\Banhammer\BanhammerServiceProvider');
         $provider->boot();
-        
+
         // Manually fire booted callbacks
         $this->fireBootedCallbacks();
 
         // Get the schedule instance
         $schedule = $this->app->make(Schedule::class);
-        
+
         // Get all scheduled events
         $events = $schedule->events();
 
@@ -79,20 +79,20 @@ class SchedulerTest extends TestCase
     {
         // Clear schedule first
         $this->clearSchedule();
-        
+
         // Disable scheduler BEFORE booting
         config(['ban.scheduler_enabled' => false]);
 
         // Get the service provider and manually trigger boot
         $provider = $this->app->getProvider('Mchev\Banhammer\BanhammerServiceProvider');
         $provider->boot();
-        
+
         // Manually fire booted callbacks
         $this->fireBootedCallbacks();
 
         // Get the schedule instance
         $schedule = $this->app->make(Schedule::class);
-        
+
         // Get all scheduled events
         $events = $schedule->events();
 
@@ -108,7 +108,7 @@ class SchedulerTest extends TestCase
     {
         // Clear schedule first
         $this->clearSchedule();
-        
+
         // Set custom periodicity BEFORE booting
         config(['ban.scheduler_enabled' => true]);
         config(['ban.scheduler_periodicity' => 'everyFiveMinutes']);
@@ -116,13 +116,13 @@ class SchedulerTest extends TestCase
         // Get the service provider and manually trigger boot
         $provider = $this->app->getProvider('Mchev\Banhammer\BanhammerServiceProvider');
         $provider->boot();
-        
+
         // Manually fire booted callbacks
         $this->fireBootedCallbacks();
 
         // Get the schedule instance
         $schedule = $this->app->make(Schedule::class);
-        
+
         // Get all scheduled events
         $events = $schedule->events();
 
@@ -132,7 +132,7 @@ class SchedulerTest extends TestCase
         });
 
         $this->assertNotNull($banhammerEvent, 'The banhammer:unban command should be scheduled');
-        
+
         // Check that it's scheduled with the correct frequency
         // The expression for everyFiveMinutes is "*/5 * * * *"
         $this->assertEquals('*/5 * * * *', $banhammerEvent->expression);
@@ -142,14 +142,14 @@ class SchedulerTest extends TestCase
     {
         // Clear schedule first
         $this->clearSchedule();
-        
+
         config(['ban.scheduler_enabled' => true]);
         config(['ban.scheduler_periodicity' => 'everyMinute']);
 
         // Get the service provider and manually trigger boot
         $provider = $this->app->getProvider('Mchev\Banhammer\BanhammerServiceProvider');
         $provider->boot();
-        
+
         // Manually fire booted callbacks
         $this->fireBootedCallbacks();
 
@@ -168,14 +168,14 @@ class SchedulerTest extends TestCase
     {
         // Clear schedule first
         $this->clearSchedule();
-        
+
         config(['ban.scheduler_enabled' => true]);
         config(['ban.scheduler_periodicity' => 'hourly']);
 
         // Get the service provider and manually trigger boot
         $provider = $this->app->getProvider('Mchev\Banhammer\BanhammerServiceProvider');
         $provider->boot();
-        
+
         // Manually fire booted callbacks
         $this->fireBootedCallbacks();
 
@@ -194,7 +194,7 @@ class SchedulerTest extends TestCase
     {
         // Clear schedule first
         $this->clearSchedule();
-        
+
         // Set invalid periodicity BEFORE booting
         config(['ban.scheduler_enabled' => true]);
         config(['ban.scheduler_periodicity' => 'invalidMethodName']);
@@ -202,13 +202,13 @@ class SchedulerTest extends TestCase
         // Get the service provider and manually trigger boot
         $provider = $this->app->getProvider('Mchev\Banhammer\BanhammerServiceProvider');
         $provider->boot();
-        
+
         // Manually fire booted callbacks
         $this->fireBootedCallbacks();
 
         // Get the schedule instance
         $schedule = $this->app->make(Schedule::class);
-        
+
         // Get all scheduled events
         $events = $schedule->events();
 
@@ -218,9 +218,8 @@ class SchedulerTest extends TestCase
         });
 
         $this->assertNotNull($banhammerEvent, 'The banhammer:unban command should be scheduled even with invalid periodicity');
-        
+
         // Should fallback to everyMinute (expression: "* * * * *")
         $this->assertEquals('* * * * *', $banhammerEvent->expression, 'Should fallback to everyMinute for invalid periodicity');
     }
 }
-

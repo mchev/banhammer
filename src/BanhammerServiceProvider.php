@@ -53,9 +53,9 @@ class BanhammerServiceProvider extends ServiceProvider
             $this->app->booted(function () {
                 $schedule = $this->app->make(Schedule::class);
                 $periodicity = config('ban.scheduler_periodicity', 'everyMinute');
-                
+
                 $scheduledCommand = $schedule->command('banhammer:unban');
-                
+
                 // Dynamically call the periodicity method if it exists
                 if (method_exists($scheduledCommand, $periodicity)) {
                     $scheduledCommand->{$periodicity}();
