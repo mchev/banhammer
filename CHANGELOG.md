@@ -2,6 +2,10 @@
 
 All notable changes to `banhammer` will be documented in this file.
 
+## v2.5.0 - 2026-03-30
+
+- Laravel 13 support
+
 ## v2.3.2 - 2024-09-20
 
 - The banned scope now accepts a boolean parameter to retrieve unbanned models as well, e.g., `Model::banned(false)`. Big thanks to @onlime for the contribution!

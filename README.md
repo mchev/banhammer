@@ -68,7 +68,6 @@ $user->ban();
 - ✅ Middleware protection
 - ✅ Event system
 - ✅ Metadata support
-- ✅ Laravel 9, 10, 11, 12 & 13 compatible
 
 ---
 
@@ -77,7 +76,16 @@ $user->ban();
 ### Requirements
 
 - PHP 8.0+
-- Laravel 9, 10, 11, 12 or 13
+
+### Laravel compatibility
+
+| Laravel | Supported since Banhammer |
+|--------|----------------------------|
+| 9.x    | v1.0.0 |
+| 10.x   | v1.0.0 |
+| 11.x   | v2.2.0 |
+| 12.x   | v2.4.0 |
+| 13.x   | v2.5.0 |
 
 ### Setup
 
