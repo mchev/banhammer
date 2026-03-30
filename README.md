@@ -3,7 +3,7 @@
 > A simple and powerful ban package for Laravel - ban models, IPs, and countries with ease.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
-[![GitHub Tests Action Status](https://github.com/laravel/pint/workflows/tests/badge.svg)](https://github.com/mchev/banhammer/actions/workflows/run-tests.yml)
+[![GitHub Tests Action Status](https://github.com/mchev/banhammer/actions/workflows/run-tests.yml/badge.svg)](https://github.com/mchev/banhammer/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/mchev/banhammer.svg?style=flat-square)](https://packagist.org/packages/mchev/banhammer)
 [![Package for laravel](https://img.shields.io/badge/Package%20for%20Laravel-grey.svg?style=flat-square&logo=laravel&logoColor=white)](https://packagist.org/packages/mchev/banhammer)
 
@@ -68,7 +68,7 @@ $user->ban();
 - ✅ Middleware protection
 - ✅ Event system
 - ✅ Metadata support
-- ✅ Laravel 9, 10, 11 & 12 compatible
+- ✅ Laravel 9, 10, 11, 12 & 13 compatible
 
 ---
 
@@ -77,7 +77,7 @@ $user->ban();
 ### Requirements
 
 - PHP 8.0+
-- Laravel 9, 10, 11 or 12
+- Laravel 9, 10, 11, 12 or 13
 
 ### Setup
 
